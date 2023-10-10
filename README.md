@@ -1,4 +1,4 @@
-# itSE-group4
+# ModernFit Gym Management System (itSE-group4)
 - **Module Details:**
   - Module Leader: Dr Ra’ed Bani Abdelrahman
   - Level: 5
