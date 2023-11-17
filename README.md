@@ -1,4 +1,8 @@
 # ModernFit Gym Management System (itSE-group4)
+- **How to run**:
+  - php -S localhost:8000
+  - tailwind -i Resources\CSS\app.css -o Public\CSS\app.css --watch
+
 - **Module Details:**
   - Module Leader: Dr Ra’ed Bani Abdelrahman
   - Level: 5

@@ -24,8 +24,8 @@ if(str_contains($request, '?') == true)
 
 // Switch
 switch ($url) {
-    default: // Any other (random files)
+    default: // Any: 404
         http_response_code(404);
-        require __DIR__ . '/Views/Pages/other/404.php';
+        require __DIR__ . '/Resources/Views/Pages/other/404.php';
         break;
 }
