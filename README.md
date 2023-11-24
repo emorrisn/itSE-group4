@@ -1,41 +1,63 @@
-# ModernFit Gym Management System (itSE-group4)
+# ModernFit Gym Management System: itSE-group4
 
-- **How to setup/install**:
-  - npm install -D tailwindcss
-- **How to run**:
+## How to setup & install (For development)
 
-  - php -S localhost:8000
-  - **Non-Tailwind CLI**:
-    - npx tailwindcss -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m
-  - **Tailwind CLI**:
-    - tailwind -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m
+**Styling**
+`npm install -D tailwindcss`
 
-- **Module Details:**
+**Database**
 
-  - Module Leader: Dr Ra’ed Bani Abdelrahman
-  - Level: 5
-  - Module Name: Introduction to Software Engineering
-  - Module Code: 55-508876
+```php
+## App/Config/Database.php
+[
+    'server' => 'localhost',
+    'database' => 'itse-group4',
+    'username' => 'root',
+    'password' => '',
+    'port' => 3306,
+]
+```
 
-- **Assignment Details:**
+> **Please** make sure you have the itse-group4.sql dump file loaded and ready to go!
 
-  - Assignment Title: Portfolio and Case-Study Report (Task 1 + Task 2)
-  - Individual / Group:
-    - Task 1: Group + Individual
-    - Task 2: Individual
-  - Weighting: 100%
-    - Task 1: 70%
-    - Task 2: 30%
-  - Magnitude:
-    - Task 1: 3500 words or equivalent
-    - Task 2: 1500 words or equivalent
-  - Submission date/time: 4th January 2024
-  - Blackboard submission: Yes
-  - Turnitin submission: No
-  - Format: Software Design artifacts, source code, word/pdf document, digital media.
-  - Planned feedback date: 26th January 2024
-  - Mode of feedback: Written
-  - In-module retrieval available: No
+## How to run
+
+**PHP**
+`php -S localhost:8000`
+
+**Styling**
+| Non-Tailwind Client | Tailwind Client |
+| ----------- | ----------- |
+| `npx tailwindcss -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m` | `tailwind -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m` |
+
+---
+
+## Module Details
+
+- Module Leader: Dr Ra’ed Bani Abdelrahman
+- Level: 5
+- Module Name: Introduction to Software Engineering
+- Module Code: 55-508876
+
+## Assignment Details
+
+- Assignment Title: Portfolio and Case-Study Report (Task 1 + Task 2)
+- Individual / Group:
+  - Task 1: Group + Individual
+  - Task 2: Individual
+- Weighting: 100%
+  - Task 1: 70%
+  - Task 2: 30%
+- Magnitude:
+  - Task 1: 3500 words or equivalent
+  - Task 2: 1500 words or equivalent
+- Submission date/time: 4th January 2024
+- Blackboard submission: Yes
+- Turnitin submission: No
+- Format: Software Design artifacts, source code, word/pdf document, digital media.
+- Planned feedback date: 26th January 2024
+- Mode of feedback: Written
+- In-module retrieval available: No
 
 - **Assessment Focus:**
   - In this assessment, students are asked to consider:
@@ -116,7 +138,7 @@ In Task 2, investigate and reflect on security, legal, ethical, and professional
 
 - Appendix 1: Peer Review Form
 
-  ## Task 2
+## Task 2
 
 Submit an individual report investigating security, legal, ethical, and professional (SLEP) issues related to the system designed in Task 1. The report should:
 
