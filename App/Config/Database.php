@@ -4,8 +4,8 @@ namespace App\Config;
 
 return [
     'server' => 'url',
-    'database' => 'database_name',
-    'username' => 'username',
-    'password' => 'password',
+    'database' => 'ModernFit',
+    'username' => 'ModernFitUser',
+    'password' => 'modernfit4',
     'port' => 3306,
 ];

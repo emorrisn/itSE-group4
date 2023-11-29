@@ -7,7 +7,7 @@ use App\Models\userModel;
 /**
  * Deals with functions regarding user authentication.
  *
- * @copyright  2023 Cool-Kaftan-Group:17
+ * @copyright  2023 ModernFit-Group:4
  * @category   Helpers
  * @since      Class available since Release 1.0.1
  */ 
@@ -72,7 +72,6 @@ class authenticationHelper {
             $user = new userModel();
             return $user->find($_SESSION['userId']);
         }
-
         return null;
     }
 

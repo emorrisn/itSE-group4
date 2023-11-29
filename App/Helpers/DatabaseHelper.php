@@ -10,34 +10,46 @@ use App\Config\Database;
  * @category   Helpers
  * @since      Class available since Release 1.0.1
  */ 
-class dbHelper {
+class DatabaseHelper {
 
     function __construct()
     {
-        $this->connection = new \mysqli(Database['server'], Database['username'], Database['password'], Database['database'], Database['port']);
+        try {
+            $this->connection = new \mysqli(
+                Database['server'],
+                Database['username'],
+                Database['password'],
+                Database['database'],
+                Database['port']
+            );
+        } catch (\mysqli_sql_exception $e) {
+            // Log the error or handle it appropriately
+            die("Connection failed: " . $e->getMessage());
+        }
+    }
+
+    public function __destruct() {
+        if ($this->connection) {
+            $this->connection->close();
+        }
     }
 
     public function query($query, $associate)
     {
 
         $statement = $this->connection->prepare($query);
-        
 
-        if($statement == false)
-        {
-            return header("location: /500");
+        if (!$statement) {
+            throw new \Exception($this->connection->error);
         }
 
         $statement->execute();
            
         $results = $statement->get_result();
 
-        if($associate == true)
-        {
+        if ($associate) {
             $results = $results->fetch_assoc();
-        } 
-        else
-        {
+        } else {
             $results = $results->fetch_all(MYSQLI_ASSOC);
         }
 
@@ -64,35 +76,20 @@ class dbHelper {
         $values['created_at'] = date("Y-m-d H:i:s");
 
         // Prepare columns and values string
-        $_columns = "";
-        $_values = "";
-        foreach($columns as $v=>$col)
-        {
-            if(gettype($values[$col]) != 'integer')
-            {
-                $values[$col] = "'" . $values[$col] . "'";
-            }
+        $columns = implode(', ', array_map(function ($col) {
+            return "`$col`";
+        }, $columns));
 
-            if(count($columns) == $v+1)
-            {
-                $_columns = $_columns . "`".$col."`";
-                $_values = $_values . $values[$col];
-            } else {
-                $_columns = $_columns . "`".$col."`,";
-                $_values = $_values . $values[$col].",";
-            }
-        }
+        $placeholders = implode(', ', array_fill(0, count($values), '?'));
         
-        $prepare = "INSERT INTO " . $table . " (" . $_columns . ") VALUES (" . $_values . ");";
+        $prepare = "INSERT INTO " . $table . " (" . $columns . ") VALUES (" . $placeholders . ");";
         $statement = $this->connection->prepare($prepare);
 
-        if($statement == false)
-        {
-            return header("location: /500");;
-
-            // var_dump($this->connection->error);
-            // die();
+        if (!$statement) {
+            throw new \Exception($this->connection->error);
         }
+
+        $statement->bind_param(str_repeat('s', count($values)), ...array_values($values));
 
         $statement->execute();
         

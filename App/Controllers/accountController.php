@@ -8,7 +8,7 @@ use App\Helpers\dbHelper;
 /**
  * Deals with functions regarding a user's account.
  *
- * @copyright  2023 2023 ModernFit-Group:4
+ * @copyright  2023 ModernFit-Group:4
  * @category   Controllers
  * @since      Class available since Release 1.0.0
  */ 

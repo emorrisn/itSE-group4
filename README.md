@@ -9,16 +9,18 @@
 
 ```php
 ## App/Config/Database.php
-[
-    'server' => 'localhost',
-    'database' => 'itse-group4',
-    'username' => 'root',
-    'password' => '',
+return [
+    'server' => 'url',
+    'database' => 'ModernFit',
+    'username' => 'ModernFitUser',
+    'password' => 'modernfit4',
     'port' => 3306,
-]
+];
 ```
 
-> **Please** make sure you have the itse-group4.sql dump file loaded and ready to go!
+> **Please** make sure you have the ``base.sql`` dump file loaded and ready to go.
+
+> **And** the ``base_seed.sql`` if you wish to have dummy data loaded.
 
 ## How to run
 
