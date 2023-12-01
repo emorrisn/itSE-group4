@@ -3,6 +3,7 @@
 ## How to setup & install (For development)
 
 **Styling**
+`npm i`
 `npm install -D tailwindcss`
 
 **Database**

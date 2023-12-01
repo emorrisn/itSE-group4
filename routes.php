@@ -27,6 +27,15 @@ switch ($url) {
     case '/':
         require __DIR__ . '/Resources/Views/Pages/landing.php';
         break;
+    case '/account/login':
+        require __DIR__ . '/Resources/Views/Pages/authentication/login.php';
+        break;
+    case '/account/register':
+        require __DIR__ . '/Resources/Views/Pages/authentication/register.php';
+        break;
+    case '/dashboard':
+        require __DIR__ . '/Resources/Views/Pages/dashboard/dashboard.php';
+        break;
     default: // Any: 404
         http_response_code(404);
         require __DIR__ . '/Resources/Views/Pages/other/404.php';
