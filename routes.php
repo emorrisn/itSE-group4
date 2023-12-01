@@ -24,6 +24,9 @@ if(str_contains($request, '?') == true)
 
 // Switch
 switch ($url) {
+    case '/':
+        require __DIR__ . '/Resources/Views/Pages/landing.php';
+        break;
     default: // Any: 404
         http_response_code(404);
         require __DIR__ . '/Resources/Views/Pages/other/404.php';

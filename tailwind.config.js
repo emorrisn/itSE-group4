@@ -5,8 +5,17 @@ module.exports = {
     './Resources/Views/Components/**/*.{html,js,php}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif'],
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+    require('flowbite/plugin'),
+  ],
 }
 

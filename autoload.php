@@ -6,4 +6,4 @@
  *  As the project itself is fairly small, this won't make a great impact performance.
 */
 
-error_reporting(E_ALL ^ (E_NOTICE | E_WARNING | E_DEPRECATED));
+// error_reporting(E_ALL ^ (E_NOTICE | E_WARNING | E_DEPRECATED));
