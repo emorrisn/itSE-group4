@@ -16,6 +16,7 @@ return [
     'username' => 'ModernFitUser',
     'password' => 'modernfit4',
     'port' => 3306,
+    'algo' => PASSWORD_BCRYPT
 ];
 ```
 
@@ -34,6 +35,14 @@ return [
 | `npx tailwindcss -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m` | `tailwind -i Resources\CSS\app.css -o Public\CSS\app.css --watch -m` |
 
 ---
+
+## App Authentication
+Use these accounts to test functionality.
+| Type | Name | Email | Password |
+| ----- | --- | ----- | -------- |
+| Admin | admin | admin@example.com | admin_password |
+| Client | John Doe | john@example.com | client_password |
+| Specialist | Jane Trainer | jane@example.com | trainer_password |
 
 ## Module Details
 
