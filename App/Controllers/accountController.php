@@ -2,8 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Helpers\authenticationHelper;
-use App\Helpers\dbHelper;
+use App\Helpers\AuthenticationHelper;
+use App\Helpers\DatabaseHelper;
+use App\Models\User;
 
 /**
  * Deals with functions regarding a user's account.
@@ -18,7 +19,13 @@ class accountController {
     public static function login()
     {
         authenticationHelper::isGuest();
-        return require __DIR__ . '../../../views/login.php';
+        return require __DIR__ . '../../../Resources/Views/Pages/authentication/login.php';
+    }
+
+    public static function register()
+    {
+        authenticationHelper::isGuest();
+        return require __DIR__ . '../../../Resources/Views/Pages/authentication/register.php';
     }
 
     public static function settings()
@@ -40,23 +47,20 @@ class accountController {
 
     public static function sendlogin()
     {
-        if(isset($_POST['submit'])) {
+        if(!empty($_POST)) {
 
-            $username = $_POST['username'];
+            $email = $_POST['email'];
             $password = $_POST['password'];
+            $userModel = new User();
 
-            $database = new dbHelper();
-            $users = $database->read('user', '*', "WHERE username = '" . $username."'", true);
-            
-            if($users == null) {
-                header("location: /?error=Username not found, please try again.");
+            $authenticatedUser = $userModel->verifyCredentials($email, $password);
+
+            if($authenticatedUser == null) {
+                header("location: /account/login?error=Username or password not found, please try again.");
                 exit();
-            }        
-            
-            if ($password != $users["password"]) {
-                header("location: /?error=Password does not match, please try again.");
-                exit();
-            }
+            } 
+
+            die();
 
             $_SESSION['userId'] = $users["id"];
             $_SESSION['userName'] = $username;
@@ -77,7 +81,7 @@ class accountController {
                 exit();
             }
         }
-        header("location: /?error=Something went wrong, try again.");
+        header("location: /account/login?error=Something went wrong, try again.");
     }
 
     public static function editAccount()

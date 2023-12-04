@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\dbHelper;
+use App\Helpers\DatabaseHelper;
 
 /**
  * Provides basic template functions to amalgamate and associate data-model functions.  
@@ -16,11 +16,14 @@ abstract class Model {
     protected $table;
     protected $primaryKey;
     protected $timestamps = true;
+    protected $queryBuilder;
     protected $fillable = [];
+    protected $columns = []; 
 
     public function __construct()
     {
         $this->connection = new DatabaseHelper();
+        $this->queryBuilder = new QueryBuilder($this->connection);
 
         foreach ($this->columns as $value) {
             $this->$value = $value;
@@ -29,7 +32,8 @@ abstract class Model {
 
     public function newQuery()
     {
-        return new QueryBuilder($this->connection);
+        // print($this->connection);
+        return $this->queryBuilder;
     }
     
     public function belongsTo($relatedModel, $foreignKey)
@@ -43,12 +47,11 @@ abstract class Model {
     }
 
     public function create($data = []) {
-        if($timestamps == true)
-        {
+        if ($this->timestamps) {
             $data['created_at'] = date("Y-m-d H:i:s");
             $data['updated_at'] = date("Y-m-d H:i:s");
         }
-
+    
         return $this->connection->create($this->table, $this->fillable, $data);
     }
 
@@ -85,10 +88,15 @@ abstract class Model {
 
 class QueryBuilder {
     protected $table;
-    public $connection;
+    protected $connection;
     public $conditions = [];
     protected $limit;
     protected $orderBy;
+
+    public function __construct($connection)
+    {
+        $this->connection = $connection;
+    }
 
     public function from($table) {
         $this->table = $table;
@@ -116,7 +124,7 @@ class QueryBuilder {
     }
 
     public function get() {
-        $queryString = '';
+        $queryString = 'SELECT * FROM ' . $this->table . ' ';
         
         foreach ($this->conditions as $key => $condition) {
             list($column, $operator, $value, $logicalOperator) = $condition;
@@ -151,23 +159,11 @@ class QueryBuilder {
     
         return $params;
     }
-    
+
     private function executeQuery($queryString, $params = []) {
-        $statement = $this->connection->prepare($queryString);
-    
-        if (!$statement) {
-            die("Query preparation failed: " . $this->connection->error);
-        }
-    
-        if (!empty($params)) {
-            $statement->bind_param(str_repeat('s', count($params)), ...$params);
-        }
-    
-        $statement->execute();
-        $results = $statement->get_result()->fetch_all(MYSQLI_ASSOC);
-    
-        return $results;
+        return $this->connection->query($queryString, true, $params);
     }
+    
     
 }
 

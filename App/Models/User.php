@@ -11,7 +11,7 @@ namespace App\Models;
  */ 
 class User extends Model {
 
-    protected $table = 'user';
+    public $table = 'user';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
@@ -43,5 +43,20 @@ class User extends Model {
     public function updated_by()
     {
         return $this->belongsTo(User::class, 'updated_by_id');
+    }
+
+    public function findByEmail($email) {
+        return $this->newQuery()->from($this->table)->where('email', '=', $email)->get();
+    }
+
+    // Add a method to verify user credentials
+    public function verifyCredentials($email, $password) {
+        $user = $this->findByEmail($email);
+
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
+        }
+
+        return null;
     }
 }

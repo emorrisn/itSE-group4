@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\userModel;
+use App\Models\User;
 
 /**
  * Deals with functions regarding user authentication.
@@ -11,7 +11,7 @@ use App\Models\userModel;
  * @category   Helpers
  * @since      Class available since Release 1.0.1
  */ 
-class authenticationHelper {
+class AuthenticationHelper {
 
     public static function isAuth($type)
     {

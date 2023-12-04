@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Helpers;
-use App\Config\Database;
+
+// use App\Config\DatabaseConfig;
 
 /**
  * Provides a basic and low-level inteface with the database. 
@@ -12,15 +13,19 @@ use App\Config\Database;
  */ 
 class DatabaseHelper {
 
+    protected $connection;
+
     function __construct()
     {
+        $db = include __DIR__ . '/../Config/DatabaseConfig.php';
+    
         try {
             $this->connection = new \mysqli(
-                Database['server'],
-                Database['username'],
-                Database['password'],
-                Database['database'],
-                Database['port']
+                $db['server'],
+                $db['username'],
+                $db['password'],
+                $db['database'],
+                $db['port']
             );
         } catch (\mysqli_sql_exception $e) {
             // Log the error or handle it appropriately
@@ -34,13 +39,17 @@ class DatabaseHelper {
         }
     }
 
-    public function query($query, $associate)
-    {
-
+    public function query($query, $associate, $params = [])
+    {               
         $statement = $this->connection->prepare($query);
 
         if (!$statement) {
             throw new \Exception($this->connection->error);
+        }
+
+        if (!empty($params)) {
+            $types = str_repeat('s', count($params));
+            $statement->bind_param($types, ...$params);
         }
 
         $statement->execute();

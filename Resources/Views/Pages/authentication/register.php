@@ -20,7 +20,7 @@
 <body class="font-sans antialiased" x-data="{ mobileMenuOpen: false, isColoursVisible: false }"
   x-init="$nextTick(() => { isColoursVisible = true })">
   <div class="app">
-    <div class="bg-gray-50">
+    <div class="bg-gray-50 h-screen">
       <?php 
         include_once(__DIR__."\..\partials\header.php");
       ?>
@@ -29,7 +29,7 @@
           aria-hidden="true">
           <div x-show="isColoursVisible" x-transition:enter="transition-opacity ease-in-out duration-1000"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-30"
-            class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-pink-100 to-green-500 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] transition-transform ease-in-out"
+            class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-pink-100 to-green-500 opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] transition-opacity ease-in-out duration-1000"
             style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
           </div>
         </div>
@@ -137,7 +137,7 @@
           aria-hidden="true">
           <div x-show="isColoursVisible" x-transition:enter="transition-opacity ease-in-out duration-1000"
             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-30"
-            class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-green-100 to-emerald-500 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+            class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-green-100 to-emerald-500 opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem] transition-opacity ease-in-out duration-1000"
             style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
           </div>
         </div>

@@ -1,8 +1,11 @@
 -- Insert dummy data into the User table
 INSERT INTO `User` (`id`, `type`, `pin`, `name`, `email`, `password`, `gender`, `age`, `height`, `weight`, `profile_picture_url`, `emergency_contact_info`, `medical_history`, `preferred_language`, `address`, `created_at`, `updated_at`, `created_by_id`, `updated_by_id`)
 VALUES
-  (2, 'Client', 5678, 'John Doe', 'john@example.com', 'client_password', 'Male', 25, 180.0, 75.0, 'john_profile.jpg', '987-654-3210', 'No medical history', 'English', '456 Client Street', NOW(), NOW(), 1, 1),
-  (3, 'Trainer', 9876, 'Jane Trainer', 'jane@example.com', 'trainer_password', 'Female', 30, 170.0, 65.0, 'jane_profile.jpg', '345-678-9012', 'No medical history', 'English', '789 Trainer Street', NOW(), NOW(), 1, 1);
+  (2, 'Client', 5678, 'John Doe', 'john@example.com', '$2y$10$fpOne/Do0iPVKlFyNLQuAeAS71QMa2xmnyG3sAxrXQmOEnBSruYQK', 'Male', 25, 180.0, 75.0, 'john_profile.jpg', '987-654-3210', 'No medical history', 'English', '456 Client Street', NOW(), NOW(), 1, 1),
+  (3, 'Trainer', 9876, 'Jane Trainer', 'jane@example.com', '$2y$10$E8tdrPyFQz9As3zu8t2GIO1tWJmZteqjzIXA6W052BCg4RadGrtti', 'Female', 30, 170.0, 65.0, 'jane_profile.jpg', '345-678-9012', 'No medical history', 'English', '789 Trainer Street', NOW(), NOW(), 1, 1);
+
+-- password(client): client_password
+-- password(trainer): trainer_password
 
 -- Insert dummy data into the Workout table
 INSERT INTO `Workout` (`id`, `name`, `description`, `duration`, `intensity_level`, `targeted_muscle_groups`, `location`, `recommended_frequency`, `recommended_intensity_range`, `required_equipment`, `created_at`, `updated_at`, `created_by_id`, `updated_by_id`)

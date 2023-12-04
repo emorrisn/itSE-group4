@@ -314,7 +314,9 @@ ALTER TABLE `Subscription` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 -- Create Admin user with a password
 INSERT INTO `User` (`id`, `type`, `pin`, `name`, `email`, `password`, `gender`, `age`, `height`, `weight`, `profile_picture_url`, `emergency_contact_info`, `medical_history`, `preferred_language`, `address`, `created_at`, `updated_at`, `created_by_id`, `updated_by_id`)
-VALUES (1, 'Admin', 1234, 'admin', 'admin@example.com', 'admin_password', 'Male', 30, 175.0, 70.0, 'admin_profile.jpg', '123-456-7890', 'No medical history', 'English', '123 Admin Street', NOW(), NOW(), NULL, NULL);
+VALUES (1, 'Admin', 1234, 'admin', 'admin@example.com', '$2y$10$8psdf0Us6pJoDueQRSgwLeLPsA6iMOakkCPuU3zYT/gidM8X4TUzO', 'Male', 30, 175.0, 70.0, 'admin_profile.jpg', '123-456-7890', 'No medical history', 'English', '123 Admin Street', NOW(), NOW(), NULL, NULL);
+
+--password: admin_password
 
 UPDATE `User` SET `created_by_id` = 1, `updated_by_id` = 1 WHERE `id` = 1;
 

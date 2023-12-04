@@ -11,7 +11,7 @@
 ```php
 ## App/Config/Database.php
 return [
-    'server' => 'url',
+    'server' => 'localhost',
     'database' => 'ModernFit',
     'username' => 'ModernFitUser',
     'password' => 'modernfit4',
