@@ -12,10 +12,9 @@ use App\Models\User;
  * @copyright  2023 ModernFit-Group:4
  * @category   Controllers
  * @since      Class available since Release 1.0.0
- */ 
-class accountController {
-
-    
+ */
+class accountController
+{
     public static function login()
     {
         authenticationHelper::isGuest();
@@ -47,7 +46,7 @@ class accountController {
 
     public static function sendlogin()
     {
-        if(!empty($_POST)) {
+        if (!empty($_POST)) {
 
             $email = $_POST['email'];
             $password = $_POST['password'];
@@ -55,31 +54,18 @@ class accountController {
 
             $authenticatedUser = $userModel->verifyCredentials($email, $password);
 
-            if($authenticatedUser == null) {
+            if ($authenticatedUser == null) {
                 header("location: /account/login?error=Username or password not found, please try again.");
                 exit();
-            } 
-
-            die();
-
-            $_SESSION['userId'] = $users["id"];
-            $_SESSION['userName'] = $username;
-            
-            if ($password == $users["password"]) {
-                if($users["id"] == 2) {
-                    $_SESSION['userType'] = 'staff';
-                    session_commit();
-                    header("location: /staff");
-                    exit();
-                }
             }
-            
-            if($users["id"] == 1) {
-                $_SESSION['userType'] = 'manager';
-                session_commit();
-                header("location: /manager/boxes");
-                exit();
-            }
+
+            $auth = new AuthenticationHelper();
+            $_SESSION['token'] = $auth->generateToken($authenticatedUser); // $auth->validateToken($_SESSION['token'], $authenticatedUser)
+            $_SESSION['email'] = $authenticatedUser->email;
+
+            session_commit();
+            header("location: /dashboard");
+            exit();
         }
         header("location: /account/login?error=Something went wrong, try again.");
     }
@@ -97,15 +83,12 @@ class accountController {
             'email_threshold' => $_REQUEST['threshold'],
         ]);
 
-        if($_REQUEST['remember'] == 'on')
-        {
-            if($_REQUEST['new_password'] == "" || $_REQUEST['new_password_confirm'] == "")
-            {
+        if ($_REQUEST['remember'] == 'on') {
+            if ($_REQUEST['new_password'] == "" || $_REQUEST['new_password_confirm'] == "") {
                 header("location: /account/settings?message=Password fields blank.");
             }
 
-            if($_REQUEST['new_password'] != $_REQUEST['new_password_confirm'])
-            {
+            if ($_REQUEST['new_password'] != $_REQUEST['new_password_confirm']) {
                 header("location: /account/settings?message=Password fields do not match.");
             }
 
@@ -116,5 +99,4 @@ class accountController {
 
         header("location: /account/settings?message=Changes saved");
     }
-        
 }

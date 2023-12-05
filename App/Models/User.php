@@ -8,14 +8,17 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
-class User extends Model {
+ */
+class User extends Model
+{
 
     public $table = 'user';
     protected $primaryKey = 'id';
     public $timestamps = true;
+    protected $attributes = [];
 
     protected $fillable = [
+        'id',
         'type',
         'pin',
         'name',
@@ -45,16 +48,20 @@ class User extends Model {
         return $this->belongsTo(User::class, 'updated_by_id');
     }
 
-    public function findByEmail($email) {
-        return $this->newQuery()->from($this->table)->where('email', '=', $email)->get();
+    public function findByEmail($email)
+    {
+        return $this->query->from($this->table)->where('email', '=', $email)->get();
     }
 
     // Add a method to verify user credentials
-    public function verifyCredentials($email, $password) {
+    public function verifyCredentials($email, $password)
+    {
         $user = $this->findByEmail($email);
 
         if ($user && password_verify($password, $user['password'])) {
-            return $user;
+            $this->fill($user);
+
+            return $this;
         }
 
         return null;

@@ -10,32 +10,39 @@ use App\Helpers\DatabaseHelper;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.3
- */ 
-abstract class Model {
-
+ */
+abstract class Model
+{
+    protected $connection;
     protected $table;
     protected $primaryKey;
     protected $timestamps = true;
-    protected $queryBuilder;
+    protected $query;
     protected $fillable = [];
-    protected $columns = []; 
+    protected $columns = [];
+    protected $attributes = [];
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
         $this->connection = new DatabaseHelper();
-        $this->queryBuilder = new QueryBuilder($this->connection);
+        $this->query = new QueryBuilder($this->connection);
+        $this->fill($attributes);
 
         foreach ($this->columns as $value) {
             $this->$value = $value;
         }
     }
 
-    public function newQuery()
+    public function __get($key)
     {
-        // print($this->connection);
-        return $this->queryBuilder;
+        return $this->attributes[$key];
     }
-    
+
+    public function __set($key, $value)
+    {
+        $this->attributes[$key] = $value;
+    }
+
     public function belongsTo($relatedModel, $foreignKey)
     {
         $relatedTable = (new \ReflectionClass($relatedModel))->getShortName();
@@ -46,47 +53,60 @@ abstract class Model {
         return $relatedModel;
     }
 
-    public function create($data = []) {
+    public function create($data = [])
+    {
         if ($this->timestamps) {
             $data['created_at'] = date("Y-m-d H:i:s");
             $data['updated_at'] = date("Y-m-d H:i:s");
         }
-    
+
         return $this->connection->create($this->table, $this->fillable, $data);
     }
 
-    public function edit($id, $data = []) {
+    public function edit($id, $data = [])
+    {
         $data['updated_at'] = date("Y-m-d H:i:s");
 
         return $this->connection->update($this->table, $id, $data);
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         return $this->connection->delete($this->table, $id);
     }
 
-    public function save($data) {
-        if ($this->id) {
-            // If the model has an ID, update the existing record
-            return $this->newQuery()->where('id', '=', $this->id)->update($data, $this->id);
-        } else {
-            // If the model doesn't have an ID, create a new record
-            $result = $this->newQuery()->create($data);
-    
-            // If the creation is successful, update the model with the new data
-            if ($result) {
-                foreach ($data as $key => $value) {
-                    $this->$key = $value;
-                }
+    // public function save($data)
+    // {
+    //     if ($this->attributes['id']) {
+    //         // If the model has an ID, update the existing record
+    //         return $this->query->where('id', '=', $this->attributes['id'])->update($data, $this->attributes['id']);
+    //     } else {
+    //         // If the model doesn't have an ID, create a new record
+    //         $result = $this->query->create($data);
+
+    //         // If the creation is successful, update the model with the new data
+    //         if ($result) {
+    //             foreach ($data as $key => $value) {
+    //                 $this->$key = $value;
+    //             }
+    //         }
+
+    //         return $result;
+    //     }
+    // }
+
+    public function fill(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            if (in_array($key, $this->fillable)) {
+                $this->attributes[$key] = $value;
             }
-    
-            return $result;
         }
     }
-    
 }
 
-class QueryBuilder {
+class QueryBuilder
+{
     protected $table;
     protected $connection;
     public $conditions = [];
@@ -98,73 +118,79 @@ class QueryBuilder {
         $this->connection = $connection;
     }
 
-    public function from($table) {
+    public function from($table)
+    {
         $this->table = $table;
         return $this;
     }
 
-    public function where($column, $operator, $value) {
+    public function where($column, $operator, $value)
+    {
         $this->conditions[] = [$column, $operator, $value, 'AND'];
         return $this;
     }
 
-    public function orWhere($column, $operator, $value) {
+    public function orWhere($column, $operator, $value)
+    {
         $this->conditions[] = [$column, $operator, $value, 'OR'];
         return $this;
     }
 
-    public function limit($limit) {
+    public function limit($limit)
+    {
         $this->limit = $limit;
         return $this;
     }
 
-    public function orderBy($column, $direction = 'asc') {
+    public function orderBy($column, $direction = 'asc')
+    {
         $this->orderBy = "ORDER BY $column $direction";
         return $this;
     }
 
-    public function get() {
+    public function get()
+    {
         $queryString = 'SELECT * FROM ' . $this->table . ' ';
-        
+
         foreach ($this->conditions as $key => $condition) {
             list($column, $operator, $value, $logicalOperator) = $condition;
-    
+
             if ($key === 0) {
                 $queryString .= "WHERE $column $operator ?";
             } else {
                 $queryString .= " $logicalOperator $column $operator ?";
             }
         }
-    
+
         if (!empty($this->orderBy)) {
             $queryString .= " $this->orderBy";
         }
-    
+
         if (!empty($this->limit)) {
             $queryString .= " LIMIT $this->limit";
         }
-    
+
         $results = $this->executeQuery($queryString, $this->getBindParams());
-    
+
         return $results;
     }
-    
-    private function getBindParams() {
+
+    private function getBindParams()
+    {
         $params = [];
-    
+
         foreach ($this->conditions as $condition) {
-            list(, , $value) = $condition;
+            list(,, $value) = $condition;
             $params[] = $value;
         }
-    
+
         return $params;
     }
 
-    private function executeQuery($queryString, $params = []) {
+    private function executeQuery($queryString, $params = [])
+    {
         return $this->connection->query($queryString, true, $params);
     }
-    
-    
 }
 
 // // Create a new user
@@ -176,7 +202,7 @@ class QueryBuilder {
 // ]);
 
 // // Fetch all users
-// $users = $user->newQuery()->get();
+// $users = $user->query->get();
 // var_dump($users);
 
 // // Display user information
@@ -185,7 +211,7 @@ class QueryBuilder {
 // }
 
 // // Find a user by ID
-// $foundUser = $user->newQuery()->where('id', '=', 1)->get();
+// $foundUser = $user->query->where('id', '=', 1)->get();
 // var_dump($foundUser);
 
 
