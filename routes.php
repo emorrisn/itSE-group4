@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\accountController;
+use App\Controllers\dashboardController;
 
 /** 
  * routes.php
@@ -38,9 +39,7 @@ switch ($url) {
         break;
     case '/dashboard':
         // Now need to verify the session using a middleware on this route!
-        print_r($_SESSION);
-        die();
-        require __DIR__ . '/Resources/Views/Pages/dashboard/dashboard.php';
+        dashboardController::dashboard();
         break;
     default: // Any: 404
         http_response_code(404);

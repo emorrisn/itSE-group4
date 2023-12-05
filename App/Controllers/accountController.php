@@ -59,8 +59,7 @@ class accountController
                 exit();
             }
 
-            $auth = new AuthenticationHelper();
-            $_SESSION['token'] = $auth->generateToken($authenticatedUser); // $auth->validateToken($_SESSION['token'], $authenticatedUser)
+            $_SESSION['token'] = AuthenticationHelper::generateToken($authenticatedUser); // AuthenticationHelper::validateToken($_SESSION['token'], $authenticatedUser)
             $_SESSION['email'] = $authenticatedUser->email;
 
             session_commit();
