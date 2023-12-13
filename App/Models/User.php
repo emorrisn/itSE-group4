@@ -35,6 +35,8 @@ class User extends Model
         'address',
         'created_by_id',
         'updated_by_id',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships
@@ -58,11 +60,15 @@ class User extends Model
     {
         $user = $this->findByEmail($email);
 
+        // var_dump(password_verify($password, $user['password']));
+        // die();
+
         if ($user && password_verify($password, $user['password'])) {
             $this->fill($user);
 
             return $this;
         }
+
 
         return null;
     }

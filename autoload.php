@@ -15,6 +15,7 @@ require_once(__DIR__ . "/App/Config/DatabaseConfig.php");
 // Helpers
 require_once(__DIR__ . "/App/Helpers/DatabaseHelper.php");
 require_once(__DIR__ . "/App/Helpers/AuthenticationHelper.php");
+require_once(__DIR__ . "/App/Helpers/ValidationHelper.php");
 
 // Models
 require_once(__DIR__ . "/App/Models/Model.php");

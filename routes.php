@@ -31,11 +31,17 @@ switch ($url) {
     case '/account/login':
         accountController::login();
         break;
+    case '/account/forgot':
+        accountController::forgot();
+        break;
     case '/login':
         accountController::sendlogin();
         break;
     case '/account/register':
         accountController::register();
+        break;
+    case '/register':
+        accountController::sendregister();
         break;
     case '/dashboard':
         // Now need to verify the session using a middleware on this route!
