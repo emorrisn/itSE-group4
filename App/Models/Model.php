@@ -193,6 +193,7 @@ class QueryBuilder
     }
 }
 
+// Example: 
 // // Create a new user
 // $user = new User();
 // $user->create([
@@ -202,7 +203,7 @@ class QueryBuilder
 // ]);
 
 // // Fetch all users
-// $users = $user->query->get();
+// $users = $user->get();
 // var_dump($users);
 
 // // Display user information
@@ -211,7 +212,7 @@ class QueryBuilder
 // }
 
 // // Find a user by ID
-// $foundUser = $user->query->where('id', '=', 1)->get();
+// $foundUser = $user->where('id', '=', 1)->get();
 // var_dump($foundUser);
 
 
