@@ -20,4 +20,29 @@ class dashboardController
         authenticationHelper::isAuth();
         return require __DIR__ . '../../../Resources/Views/Pages/dashboard/dashboard.php';
     }
+
+    public static function pin()
+    {
+        authenticationHelper::isAuth();
+        return require __DIR__ . '../../../Resources/Views/Pages/dashboard/pin.php';
+    }
+
+    public static function pin_reset()
+    {
+
+        authenticationHelper::isAuth();
+        $user = AuthenticationHelper::getUser();
+        $pin = str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
+
+        $user->edit($user->id, ['pin' => $pin]);
+
+        header("location: /my/pin");
+        exit();
+    }
+
+    public static function personalTrainer()
+    {
+        authenticationHelper::isAuth();
+        return require __DIR__ . '../../../Resources/Views/Pages/dashboard/personalTrainer.php';
+    }
 }

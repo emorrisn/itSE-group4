@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class ExerciseLog extends Model
 {
     protected $table = 'ExerciseLog';
@@ -27,8 +27,6 @@ class ExerciseLog extends Model
         'perceived_difficulty_level',
         'fatigue_level',
         'motivation_level',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

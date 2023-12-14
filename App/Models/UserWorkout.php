@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class UserWorkout extends Model
 {
     protected $table = 'userworkout';
@@ -22,8 +22,6 @@ class UserWorkout extends Model
         'completion_date',
         'feedback_rating',
         'user_comments',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class Food extends Model
 {
     protected $table = 'Food';
@@ -27,8 +27,6 @@ class Food extends Model
         'origin',
         'shelf_life',
         'source',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

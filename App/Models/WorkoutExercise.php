@@ -8,8 +8,9 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
-class WorkoutExercise extends Model {
+ */
+class WorkoutExercise extends Model
+{
 
     protected $table = 'workoutexercise';
     public $timestamps = true;
@@ -21,8 +22,6 @@ class WorkoutExercise extends Model {
         'sets',
         'reps',
         'rest_time_between_sets',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

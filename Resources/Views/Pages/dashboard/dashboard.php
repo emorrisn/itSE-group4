@@ -62,7 +62,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
               </div>
               <div>
-                <a href="/my/code" class="font-semibold text-gray-900">
+                <a href="/my/pin" class="font-semibold text-gray-900">
                   Sign-in to the gym
                   <span class="absolute inset-0"></span>
                 </a>

@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class MealLog extends Model
 {
     protected $table = 'MealLog';
@@ -25,8 +25,6 @@ class MealLog extends Model
         'location_of_consumption',
         'mood_during_consumption',
         'additional_comments',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

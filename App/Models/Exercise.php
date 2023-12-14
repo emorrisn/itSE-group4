@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class Exercise extends Model
 {
     protected $table = 'exercise';
@@ -26,8 +26,6 @@ class Exercise extends Model
         'exercise_variation',
         'target_heart_rate_range',
         'recommended_form_tips',
-        'created_by_id',
-        'updated_by_id',
     ];
 
     // Relationships

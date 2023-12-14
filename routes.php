@@ -44,8 +44,17 @@ switch ($url) {
         accountController::sendregister();
         break;
     case '/dashboard':
-        // Now need to verify the session using a middleware on this route!
         dashboardController::dashboard();
+        break;
+    case '/my/pin':
+        dashboardController::pin();
+        break;
+    case '/my/pr':
+        dashboardController::personalTrainer();
+        break;
+    case '/reset/my/pin':
+        // Now need to verify the session using a middleware on this route!
+        dashboardController::pin_reset();
         break;
     default: // Any: 404
         http_response_code(404);
