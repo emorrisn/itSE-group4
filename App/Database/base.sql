@@ -14,15 +14,15 @@ CREATE TABLE `User` (
   `age` int,
   `height` float,
   `weight` float,
+  `description` text,
+  `trainer_id` int,
   `profile_picture_url` varchar(255),
   `emergency_contact_info` varchar(255),
   `medical_history` text,
   `preferred_language` varchar(50),
   `address` varchar(255),
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Workout` (
@@ -37,9 +37,7 @@ CREATE TABLE `Workout` (
   `recommended_intensity_range` varchar(50),
   `required_equipment` varchar(255),
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Exercise` (
@@ -54,9 +52,7 @@ CREATE TABLE `Exercise` (
   `target_heart_rate_range` varchar(50),
   `recommended_form_tips` text,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `WorkoutExercise` (
@@ -66,9 +62,7 @@ CREATE TABLE `WorkoutExercise` (
   `reps` int,
   `rest_time_between_sets` int,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `UserWorkout` (
@@ -79,9 +73,7 @@ CREATE TABLE `UserWorkout` (
   `feedback_rating` int,
   `user_comments` text,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `ExerciseLog` (
@@ -97,9 +89,7 @@ CREATE TABLE `ExerciseLog` (
   `fatigue_level` int,
   `motivation_level` int,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Diet` (
@@ -114,9 +104,7 @@ CREATE TABLE `Diet` (
   `allowed_cheat_days` int,
   `dietary_restrictions` text,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `UserDiet` (
@@ -126,9 +114,7 @@ CREATE TABLE `UserDiet` (
   `status` varchar(20),
   `completion_date` date,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Meal` (
@@ -143,9 +129,7 @@ CREATE TABLE `Meal` (
   `recipe_link` varchar(255),
   `vegetarian_indicator` boolean,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `MealLog` (
@@ -159,9 +143,7 @@ CREATE TABLE `MealLog` (
   `mood_during_consumption` varchar(50),
   `additional_comments` text,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Food` (
@@ -177,9 +159,7 @@ CREATE TABLE `Food` (
   `shelf_life` int,
   `source` varchar(50),
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `DietMeal` (
@@ -187,9 +167,7 @@ CREATE TABLE `DietMeal` (
   `meal_id` int,
   `order` int,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `MealFood` (
@@ -198,9 +176,7 @@ CREATE TABLE `MealFood` (
   `quantity` int,
   `notes` text,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-  `created_by_id` int,
-  `updated_by_id` int
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Notification` (
@@ -222,33 +198,15 @@ CREATE TABLE `Subscription` (
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-ALTER TABLE `User` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `User` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Workout` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Workout` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Exercise` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Exercise` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
+ALTER TABLE `User` ADD FOREIGN KEY (`trainer_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `WorkoutExercise` ADD FOREIGN KEY (`workout_id`) REFERENCES `Workout` (`id`);
 
 ALTER TABLE `WorkoutExercise` ADD FOREIGN KEY (`exercise_id`) REFERENCES `Exercise` (`id`);
 
-ALTER TABLE `WorkoutExercise` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `WorkoutExercise` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
 ALTER TABLE `UserWorkout` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `UserWorkout` ADD FOREIGN KEY (`workout_id`) REFERENCES `Workout` (`id`);
-
-ALTER TABLE `UserWorkout` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `UserWorkout` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `ExerciseLog` ADD FOREIGN KEY (`exercise_id`) REFERENCES `Exercise` (`id`);
 
@@ -256,15 +214,7 @@ ALTER TABLE `ExerciseLog` ADD FOREIGN KEY (`workout_id`) REFERENCES `Workout` (`
 
 ALTER TABLE `ExerciseLog` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
-ALTER TABLE `ExerciseLog` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `ExerciseLog` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
 ALTER TABLE `Diet` ADD FOREIGN KEY (`user_trainer_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Diet` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Diet` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `UserDiet` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
@@ -272,53 +222,25 @@ ALTER TABLE `UserDiet` ADD FOREIGN KEY (`diet_id`) REFERENCES `Diet` (`id`);
 
 ALTER TABLE `UserDiet` ADD FOREIGN KEY (`user_trainer_id`) REFERENCES `User` (`id`);
 
-ALTER TABLE `UserDiet` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `UserDiet` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Meal` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Meal` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
 ALTER TABLE `MealLog` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `MealLog` ADD FOREIGN KEY (`meal_id`) REFERENCES `Meal` (`id`);
-
-ALTER TABLE `MealLog` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `MealLog` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Food` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `Food` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `DietMeal` ADD FOREIGN KEY (`diet_id`) REFERENCES `Diet` (`id`);
 
 ALTER TABLE `DietMeal` ADD FOREIGN KEY (`meal_id`) REFERENCES `Meal` (`id`);
 
-ALTER TABLE `DietMeal` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `DietMeal` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
-
 ALTER TABLE `MealFood` ADD FOREIGN KEY (`meal_id`) REFERENCES `Meal` (`id`);
 
 ALTER TABLE `MealFood` ADD FOREIGN KEY (`food_id`) REFERENCES `Food` (`id`);
-
-ALTER TABLE `MealFood` ADD FOREIGN KEY (`created_by_id`) REFERENCES `User` (`id`);
-
-ALTER TABLE `MealFood` ADD FOREIGN KEY (`updated_by_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `Notification` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 ALTER TABLE `Subscription` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
 
 -- Create Admin user with a password
-INSERT INTO `User` (`id`, `type`, `pin`, `name`, `email`, `password`, `gender`, `age`, `height`, `weight`, `profile_picture_url`, `emergency_contact_info`, `medical_history`, `preferred_language`, `address`, `created_at`, `updated_at`, `created_by_id`, `updated_by_id`)
-VALUES (1, 'Admin', 1234, 'admin', 'admin@example.com', '$2y$10$8psdf0Us6pJoDueQRSgwLeLPsA6iMOakkCPuU3zYT/gidM8X4TUzO', 'Male', 30, 175.0, 70.0, 'admin_profile.jpg', '123-456-7890', 'No medical history', 'English', '123 Admin Street', NOW(), NOW(), NULL, NULL);
-
---password: admin_password
-
-UPDATE `User` SET `created_by_id` = 1, `updated_by_id` = 1 WHERE `id` = 1;
+INSERT INTO `User` (`id`, `type`, `pin`, `name`, `email`, `password`, `gender`, `age`, `height`, `weight`, `description`, `trainer_id`, `profile_picture_url`, `emergency_contact_info`, `medical_history`, `preferred_language`, `address`, `created_at`, `updated_at`)
+VALUES (1, 'Admin', 1234, 'admin', 'admin@example.com', '$2y$10$8psdf0Us6pJoDueQRSgwLeLPsA6iMOakkCPuU3zYT/gidM8X4TUzO', 'Male', 30, 175.0, 70.0, NULL, NULL, 'admin_profile.jpg', '123-456-7890', 'No medical history', 'English', '123 Admin Street', NOW(), NOW());
 
 -- Permissions & Stuff
 drop user 'ModernFitUser'@localhost;

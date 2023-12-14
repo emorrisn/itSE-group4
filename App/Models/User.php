@@ -28,6 +28,8 @@ class User extends Model
         'age',
         'height',
         'weight',
+        'description',
+        'trainer_id',
         'profile_picture_url',
         'emergency_contact_info',
         'medical_history',
@@ -38,14 +40,11 @@ class User extends Model
     ];
 
     // Relationships
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
 
-    public function updated_by()
+
+    public function trainer()
     {
-        return $this->belongsTo(User::class, 'updated_by_id');
+        return $this->belongsTo(User::class, 'trainer_id');
     }
 
     public function findByEmail($email)
