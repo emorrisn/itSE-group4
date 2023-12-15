@@ -140,17 +140,30 @@ class DatabaseHelper
             $i = array_search($v, array_keys($values));
 
             if (count($values) == $i + 1) {
-                $statement = $statement . "`" . $v . "` = '" . $val . "'";
+
+                if ($val == null) {
+                    $statement = $statement . "`" . $v . "` = NULL";
+                } else {
+                    $statement = $statement . "`" . $v . "` = '" . $val . "'";
+                }
             } else {
-                $statement = $statement . "`" . $v . "` = '" . $val . "', ";
+                if ($val == null) {
+                    $statement = $statement . "`" . $v . "` = NULL, ";
+                } else {
+                    $statement = $statement . "`" . $v . "` = '" . $val . "', ";
+                }
             }
         }
+
+        // print_r($statement);
+        // die();
         $prepare = $statement . " WHERE (`id` = '" . $id . "');";
+
 
         $statement = $this->connection->prepare($prepare);
 
         if ($statement == false) {
-            return header("location: /500");;
+            return header("location: /500");
 
             // print_r($this->connection->error);
             // die();

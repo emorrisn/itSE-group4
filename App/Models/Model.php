@@ -43,12 +43,26 @@ abstract class Model
         $this->attributes[$key] = $value;
     }
 
-    public function belongsTo($relatedModel, $foreignKey)
-    {
-        $relatedTable = (new \ReflectionClass($relatedModel))->getShortName();
+    // public function belongsTo($relatedModel, $foreignKey)
+    // {
+    //     $relatedTable = (new \ReflectionClass($relatedModel))->getShortName();
 
+    //     $relatedModel = new $relatedModel();
+    //     $relatedModel->where($foreignKey, '=', $this->{$this->primaryKey});
+
+    //     return $relatedModel;
+    // }
+
+    public function belongsTo($relatedModel, $foreignKey = "id", $localKey)
+    {
         $relatedModel = new $relatedModel();
-        $relatedModel->where($foreignKey, '=', $this->{$this->primaryKey});
+
+        if ($this->{$localKey}) {
+            // No local value set...
+        }
+
+        $data = $relatedModel->query->from($relatedModel->table)->where($foreignKey, '=', $this->{$localKey});
+        $relatedModel->fill($data->get());
 
         return $relatedModel;
     }

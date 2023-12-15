@@ -53,8 +53,10 @@ switch ($url) {
         dashboardController::personalTrainer();
         break;
     case '/reset/my/pin':
-        // Now need to verify the session using a middleware on this route!
         dashboardController::pin_reset();
+        break;
+    case '/reset/my/trainer':
+        accountController::trainer_reset();
         break;
     default: // Any: 404
         http_response_code(404);

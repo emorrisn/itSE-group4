@@ -152,4 +152,15 @@ class accountController
 
         header("location: /account/settings?message=Changes saved");
     }
+
+    public static function trainer_reset()
+    {
+        authenticationHelper::isAuth();
+        $user = AuthenticationHelper::getUser();
+
+        $user->edit($user->id, ['trainer_id' => NULL]);
+
+        header("location: /my/pr");
+        exit();
+    }
 }

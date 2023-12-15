@@ -44,7 +44,7 @@ class User extends Model
 
     public function trainer()
     {
-        return $this->belongsTo(User::class, 'trainer_id');
+        return $this->belongsTo($this, 'id', 'trainer_id');
     }
 
     public function findByEmail($email)
