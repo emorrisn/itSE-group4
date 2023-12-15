@@ -24,21 +24,11 @@ class DietMeal extends Model
     // Relationships
     public function diet()
     {
-        return $this->belongsTo(Diet::class, 'diet_id');
+        return $this->belongsTo(Diet::class, 'id', 'diet_id');
     }
 
     public function meal()
     {
-        return $this->belongsTo(Meal::class, 'meal_id');
-    }
-
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
+        return $this->belongsTo(Meal::class, 'id', 'meal_id');
     }
 }

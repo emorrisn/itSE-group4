@@ -28,15 +28,4 @@ class Food extends Model
         'shelf_life',
         'source',
     ];
-
-    // Relationships
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
 }

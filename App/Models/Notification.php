@@ -8,7 +8,7 @@ namespace App\Models;
  * @copyright  2023 ModernFit-Group:4
  * @category   Models
  * @since      Class available since Release 1.0.2
- */ 
+ */
 class Notification extends Model
 {
     protected $table = 'Notification';
@@ -27,6 +27,6 @@ class Notification extends Model
     // Relationships
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 }

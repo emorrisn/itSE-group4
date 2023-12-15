@@ -27,15 +27,4 @@ class Meal extends Model
         'recipe_link',
         'vegetarian_indicator',
     ];
-
-    // Relationships
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
 }

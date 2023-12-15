@@ -27,21 +27,11 @@ class WorkoutExercise extends Model
     // Relationships
     public function workout()
     {
-        return $this->belongsTo(Workout::class, 'workout_id');
+        return $this->belongsTo(Workout::class, 'id', 'workout_id');
     }
 
     public function exercise()
     {
-        return $this->belongsTo(Exercise::class, 'exercise_id');
-    }
-
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
+        return $this->belongsTo(Exercise::class, 'id', 'exercise_id');
     }
 }

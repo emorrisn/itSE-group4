@@ -27,15 +27,4 @@ class Exercise extends Model
         'target_heart_rate_range',
         'recommended_form_tips',
     ];
-
-    // Relationships
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by_id');
-    }
-
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by_id');
-    }
 }
