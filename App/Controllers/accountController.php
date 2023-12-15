@@ -41,6 +41,12 @@ class accountController
         return require __DIR__ . '../../../views/settings.php';
     }
 
+    public static function account()
+    {
+        authenticationHelper::isAuth();
+        return require __DIR__ . '../../../Resources/Views/Pages/client/account.php';
+    }
+
     public static function logout()
     {
         unset($_SESSION['token']);

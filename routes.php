@@ -46,6 +46,9 @@ switch ($url) {
     case '/dashboard':
         dashboardController::dashboard();
         break;
+    case '/account':
+        accountController::account();
+        break;
     case '/my/pin':
         dashboardController::pin();
         break;

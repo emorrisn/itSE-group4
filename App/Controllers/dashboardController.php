@@ -18,13 +18,13 @@ class dashboardController
     public static function dashboard()
     {
         authenticationHelper::isAuth();
-        return require __DIR__ . '../../../Resources/Views/Pages/dashboard/dashboard.php';
+        return require __DIR__ . '../../../Resources/Views/Pages/client/dashboard.php';
     }
 
     public static function pin()
     {
         authenticationHelper::isAuth();
-        return require __DIR__ . '../../../Resources/Views/Pages/dashboard/pin.php';
+        return require __DIR__ . '../../../Resources/Views/Pages/client/pin.php';
     }
 
     public static function pin_reset()
@@ -42,6 +42,6 @@ class dashboardController
     public static function personalTrainer()
     {
         authenticationHelper::isAuth();
-        return require __DIR__ . '../../../Resources/Views/Pages/dashboard/personalTrainer.php';
+        return require __DIR__ . '../../../Resources/Views/Pages/client/personalTrainer.php';
     }
 }
