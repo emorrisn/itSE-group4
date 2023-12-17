@@ -22,7 +22,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
               <div>Specialist Home</div>
             </h2>
             <div class="mt-4">
-              <form class="" action="/specialist/search" method="GET">
+              <form class="" action="/search" method="GET">
                 <div class="mt-2">
                   <div class="relative mt-2 rounded-xl shadow-sm">
                     <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">

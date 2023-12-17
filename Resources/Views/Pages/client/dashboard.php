@@ -12,7 +12,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
   <div class="app">
     <div class="bg-gray-50 min-h-screen">
       <div class="flex relative isolate py-6 px-6 lg:px-8 min-h-full justify-center">
-        <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
+        <div class="gap-y-6 mx-auto w-full flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-gray-800">
               <span class="bg-gradient-to-r from-blue-500 via-blue-700 to-gray-800 bg-clip-text text-transparent">Modern</span>
@@ -170,7 +170,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
               </div>
             </div>
           </div>
-          <?php if (AuthenticationHelper::getUser()->type == "Trainer") : ?>
+          <?php if (AuthenticationHelper::getUser()->type == "Trainer" || AuthenticationHelper::getUser()->type == "Admin") : ?>
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
               <div class="group relative flex gap-x-6 rounded-xl shadow-xl hover:shadow-lg bg-white p-4 items-center hover:bg-red-50 transition ease-in-out">
                 <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
@@ -187,6 +187,30 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                 </div>
                 <div class="flex flex-none items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-orange-600 transition ease-in-out">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+
+                </div>
+              </div>
+            </div>
+          <?php endif; ?>
+          <?php if (AuthenticationHelper::getUser()->type == "Admin") : ?>
+            <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+              <div class="group relative flex gap-x-6 rounded-xl shadow-xl hover:shadow-lg bg-white p-4 items-center hover:bg-red-50 transition ease-in-out">
+                <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-pink-100 group-hover:bg-pink-600 transition ease-in-out">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-pink-600 group-hover:text-pink-200 transition ease-in-out">
+                    <path fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <a href="/admin" class="font-semibold text-gray-900">
+                    Admin Dashboard
+                    <span class="absolute inset-0"></span>
+                  </a>
+                  <p class="text-gray-600">Manage the application in it's entirety</p>
+                </div>
+                <div class="flex flex-none items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-pink-600 transition ease-in-out">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                   </svg>
 
