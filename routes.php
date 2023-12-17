@@ -37,6 +37,9 @@ switch ($url) {
     case '/login':
         accountController::sendlogin();
         break;
+    case '/logout':
+        accountController::logout();
+        break;
     case '/account/register':
         accountController::register();
         break;
@@ -60,6 +63,9 @@ switch ($url) {
         break;
     case '/reset/my/trainer':
         accountController::trainer_reset();
+        break;
+    case '/edit/account':
+        accountController::edit_account();
         break;
     default: // Any: 404
         http_response_code(404);

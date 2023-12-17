@@ -28,16 +28,27 @@ class ValidationHelper
             $message = isset($rule['message']) ? $rule['message'] : null;
 
             foreach ($methods as $method) {
-                if (strpos($method, 'confirm:') !== false) {
-                    // Handle confirm validation separately
-                    $confirmField = substr($method, strlen('confirm:'));
-                    $this->confirm($field, $confirmField, $message);
+
+                if ($method === 'nullable' && empty($this->data[$field])) {
+                    // Skip validation if the field is empty and nullable is present
+                    return;
                 } else {
-                    $this->$method($field, $message);
+                    if (strpos($method, 'confirm:') !== false) {
+                        // Handle confirm validation separately
+                        $confirmField = substr($method, strlen('confirm:'));
+                        $this->confirm($field, $confirmField, $message);
+                    } else {
+                        $this->$method($field, $message);
+                    }
                 }
             }
         }
 
+        return $this;
+    }
+
+    public function nullable()
+    {
         return $this;
     }
 

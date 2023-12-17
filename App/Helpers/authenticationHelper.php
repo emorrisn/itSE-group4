@@ -59,6 +59,12 @@ class AuthenticationHelper
         $valid = false;
         $user = new User();
         $find_user = $user->findByEmail($_SESSION['email']);
+
+        if ($find_user == null) {
+            $_SESSION = array();
+            session_commit();
+        }
+
         $user->fill($find_user);
 
         if ($find_user) {
@@ -66,7 +72,8 @@ class AuthenticationHelper
         }
 
         if ($valid == false) {
-            // TODO: Strip session
+            $_SESSION = array();
+            session_commit();
             header("location: /404");
         }
 

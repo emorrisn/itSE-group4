@@ -82,12 +82,11 @@ class accountController
             exit();
         }
         header("location: /account/login?error=Something went wrong, try again.");
+        exit();
     }
 
     public static function sendregister()
     {
-        // TODO: Validation
-
         if (!empty($_POST)) {
 
             $validator = new ValidationHelper($_POST);
@@ -96,6 +95,7 @@ class accountController
                 ['field' => 'name', 'methods' => ['required', 'string'], 'message' => 'Name is required and must be a string.'],
                 ['field' => 'email', 'methods' => ['required', 'email'], 'message' => 'Invalid email address.'],
                 ['field' => 'age', 'methods' => ['required', 'integer'], 'message' => 'Age must be a number.'],
+                ['field' => 'gender', 'methods' => ['required'], 'message' => 'Gender is required'],
                 ['field' => 'password', 'methods' => ['required'], 'message' => 'Password is required.'],
                 ['field' => 'password_confirm', 'methods' => ['required', 'confirm:password'], 'message' => 'Password confirmation does not match.'],
                 // Add more validation rules as needed
@@ -127,36 +127,7 @@ class accountController
             exit();
         }
         header("location: /account/register?error=Something went wrong, try again.");
-    }
-
-    public static function editAccount()
-    {
-        print_r($_REQUEST);
-
-        $user = authenticationHelper::getUser();
-
-        // $user->edit([
-        //     'username' => $_REQUEST['username'],
-        //     'email' => $_REQUEST['email'],
-        //     'last_email' => $_REQUEST['last_email'],
-        //     'email_threshold' => $_REQUEST['threshold'],
-        // ]);
-
-        // if ($_REQUEST['remember'] == 'on') {
-        //     if ($_REQUEST['new_password'] == "" || $_REQUEST['new_password_confirm'] == "") {
-        //         header("location: /account/settings?message=Password fields blank.");
-        //     }
-
-        //     if ($_REQUEST['new_password'] != $_REQUEST['new_password_confirm']) {
-        //         header("location: /account/settings?message=Password fields do not match.");
-        //     }
-
-        //     $user->edit([
-        //         'password' => $_REQUEST['new_password']
-        //     ]);
-        // }
-
-        header("location: /account/settings?message=Changes saved");
+        exit();
     }
 
     public static function trainer_reset()
@@ -167,6 +138,51 @@ class accountController
         $user->edit($user->id, ['trainer_id' => NULL]);
 
         header("location: /my/pr");
+        exit();
+    }
+
+    public static function edit_account()
+    {
+        if (!empty($_POST)) {
+
+            $validator = new ValidationHelper($_POST);
+
+            $validationRules = [
+                ['field' => 'name', 'methods' => ['required', 'string'], 'message' => 'Name is required and must be a string.'],
+                ['field' => 'email', 'methods' => ['required', 'email'], 'message' => 'Invalid email address.'],
+                ['field' => 'age', 'methods' => ['required', 'integer'], 'message' => 'Age must be a number.'],
+                ['field' => 'gender', 'methods' => ['required'], 'message' => 'Gender is required'],
+                ['field' => 'height', 'methods' => ['nullable', 'integer'], 'message' => 'Height must be a number.'],
+                ['field' => 'weight', 'methods' => ['nullable', 'integer'], 'message' => 'Weight must be a number.'],
+                ['field' => 'password_confirm', 'methods' => ['confirm:password'], 'message' => 'Password confirmation does not match.'],
+                // Add more validation rules as needed
+            ];
+
+            $validator->validate($validationRules);
+
+            if (!$validator->isValid()) {
+                $errorMessages = implode(', ', $validator->getErrors());
+                header("location: /account?error=" . urlencode($errorMessages));
+                exit();
+            }
+
+            $user = new User();
+            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+            $user->edit($user->id, [
+                'name' => $_POST['name'],
+                'email' => $_POST['email'],
+                'gender' => $_POST['gender'],
+                'age' => $_POST['age'],
+                'height' => $_POST['height'],
+                'weight' => $_POST['weight'],
+                'password' => $password,
+            ]);
+
+            header("location: /account?message=Saved");
+            exit();
+        }
+        header("location: /account?error=Something went wrong, try again.");
         exit();
     }
 }
