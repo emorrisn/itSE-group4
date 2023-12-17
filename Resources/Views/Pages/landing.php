@@ -7,7 +7,7 @@ include_once(__DIR__ . "\..\Headers\landing.php");
 
 <body class="font-sans antialiased" x-data="{ mobileMenuOpen: false, isColoursVisible: false }" x-init="$nextTick(() => { isColoursVisible = true; })">
   <div class="app">
-    <div class="bg-gray-50 h-screen">
+    <div class="bg-gray-50 h-full min-h-screen">
       <?php
       include_once(__DIR__ . "\partials\header.php");
       ?>

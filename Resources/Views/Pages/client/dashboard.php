@@ -10,13 +10,13 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
 <body class="font-sans antialiased">
   <div class="app">
-    <div class="bg-gray-50 h-screen">
-      <div class="flex relative isolate px-6 lg:px-8 min-h-full justify-center">
+    <div class="bg-gray-50 min-h-screen">
+      <div class="flex relative isolate py-6 px-6 lg:px-8 min-h-full justify-center">
         <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-gray-800">
               <span class="bg-gradient-to-r from-blue-500 via-blue-700 to-gray-800 bg-clip-text text-transparent">Modern</span>
-              <span>Gym</span>
+              <span>Fit</span>
             </div>
             <h2 class="flex items-center gap-x-2 text-3xl font-bold leading-9 tracking-tight text-gray-900">
               <div>Home</div>
@@ -30,7 +30,8 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                       </svg>
                     </div>
-                    <input type="text" name="search" id="search" class="block w-full rounded-xl border-2 py-1.5 pl-9 pr-20 text-gray-900 border-gray-200 placeholder:text-gray-400 focus:border-2 focus:border-blue-400 sm:text-sm sm:leading-6 bg-gray-100 transition ease-in-out" placeholder="Search">
+                    <input type="hidden" name="type" value="client">
+                    <input type="text" name="search" id="search" class="block w-full rounded-xl border-2 py-1.5 pl-9 pr-20 text-gray-900 border-gray-200 placeholder:text-gray-400 focus:border-2 focus:border-blue-400 sm:text-sm sm:leading-6 bg-gray-100 transition ease-in-out" placeholder="Search workouts and meals">
                   </div>
                 </div>
               </form>
@@ -80,8 +81,9 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
             <div class="rounded-xl shadow-xl overflow-hidden hover:shadow-lg transition ease-in-out">
               <div class="group relative flex gap-x-6 bg-white p-4 items-center hover:bg-teal-50 transition ease-in-out">
                 <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-teal-100 group-hover:bg-teal-600 transition ease-in-out">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-teal-600 group-hover:text-teal-200 transition ease-in-out">
-                    <path d="M15 1.784l-.796.796a1.125 1.125 0 101.591 0L15 1.784zM12 1.784l-.796.796a1.125 1.125 0 101.591 0L12 1.784zM9 1.784l-.796.796a1.125 1.125 0 101.591 0L9 1.784zM9.75 7.547c.498-.02.998-.035 1.5-.042V6.75a.75.75 0 011.5 0v.755c.502.007 1.002.021 1.5.042V6.75a.75.75 0 011.5 0v.88l.307.022c1.55.117 2.693 1.427 2.693 2.946v1.018a62.182 62.182 0 00-13.5 0v-1.018c0-1.519 1.143-2.829 2.693-2.946l.307-.022v-.88a.75.75 0 011.5 0v.797zM12 12.75c-2.472 0-4.9.184-7.274.54-1.454.217-2.476 1.482-2.476 2.916v.384a4.104 4.104 0 012.585.364 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 013.67 0 2.605 2.605 0 002.33 0 4.104 4.104 0 012.585-.364v-.384c0-1.434-1.022-2.7-2.476-2.917A49.138 49.138 0 0012 12.75zM21.75 18.131a2.604 2.604 0 00-1.915.165 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-2.33 0 4.104 4.104 0 01-3.67 0 2.604 2.604 0 00-1.915-.165v2.494c0 1.036.84 1.875 1.875 1.875h15.75c1.035 0 1.875-.84 1.875-1.875v-2.494z" />
+
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-teal-600 group-hover:fill-teal-200 transition ease-in-out"" viewBox=" 0 0 512 512">
+                    <path d="M0 192c0-35.3 28.7-64 64-64c.5 0 1.1 0 1.6 0C73 91.5 105.3 64 144 64c15 0 29 4.1 40.9 11.2C198.2 49.6 225.1 32 256 32s57.8 17.6 71.1 43.2C339 68.1 353 64 368 64c38.7 0 71 27.5 78.4 64c.5 0 1.1 0 1.6 0c35.3 0 64 28.7 64 64c0 11.7-3.1 22.6-8.6 32H8.6C3.1 214.6 0 203.7 0 192zm0 91.4C0 268.3 12.3 256 27.4 256H484.6c15.1 0 27.4 12.3 27.4 27.4c0 70.5-44.4 130.7-106.7 154.1L403.5 452c-2 16-15.6 28-31.8 28H140.2c-16.1 0-29.8-12-31.8-28l-1.8-14.4C44.4 414.1 0 353.9 0 283.4z" />
                   </svg>
 
                 </div>
@@ -90,7 +92,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                     Meals
                     <span class="absolute inset-0"></span>
                   </a>
-                  <p class="text-gray-600">Manage your account settings and contact info</p>
+                  <p class="text-gray-600">Access meal targets and log your meals</p>
                 </div>
                 <div class="flex flex-none items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-teal-600 transition ease-in-out">
@@ -102,8 +104,8 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
               <div class="group relative flex gap-x-6 bg-white p-4 items-center hover:bg-blue-50 transition ease-in-out">
                 <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-blue-100 group-hover:bg-blue-600 transition ease-in-out">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-blue-600 group-hover:text-blue-200 transition ease-in-out">
-                    <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" />
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blue-600 group-hover:fill-blue-200 transition ease-in-out" viewBox="0 0 640 512">
+                    <path d="M96 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V224v64V448c0 17.7-14.3 32-32 32H128c-17.7 0-32-14.3-32-32V384H64c-17.7 0-32-14.3-32-32V288c-17.7 0-32-14.3-32-32s14.3-32 32-32V160c0-17.7 14.3-32 32-32H96V64zm448 0v64h32c17.7 0 32 14.3 32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32v64c0 17.7-14.3 32-32 32H544v64c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32V288 224 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32zM416 224v64H224V224H416z" />
                   </svg>
 
                 </div>
@@ -112,7 +114,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                     Workouts
                     <span class="absolute inset-0"></span>
                   </a>
-                  <p class="text-gray-600">Manage your account settings and contact info</p>
+                  <p class="text-gray-600">Record, browse and edit your exercises </p>
                 </div>
                 <div class="flex flex-none items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-blue-600 transition ease-in-out">
@@ -133,7 +135,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                     Personal Trainer
                     <span class="absolute inset-0"></span>
                   </a>
-                  <p class="text-gray-600">Manage your account settings and contact info</p>
+                  <p class="text-gray-600">View and manage your account personal trainer</p>
                 </div>
                 <div class="flex flex-none items-center justify-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-violet-600 transition ease-in-out">
@@ -168,6 +170,30 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
               </div>
             </div>
           </div>
+          <?php if (AuthenticationHelper::getUser()->type == "Trainer") : ?>
+            <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+              <div class="group relative flex gap-x-6 rounded-xl shadow-xl hover:shadow-lg bg-white p-4 items-center hover:bg-red-50 transition ease-in-out">
+                <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-orange-600 group-hover:text-orange-200 transition ease-in-out">
+                    <path fill-rule="evenodd" d="M1.5 7.125c0-1.036.84-1.875 1.875-1.875h6c1.036 0 1.875.84 1.875 1.875v3.75c0 1.036-.84 1.875-1.875 1.875h-6A1.875 1.875 0 011.5 10.875v-3.75zm12 1.5c0-1.036.84-1.875 1.875-1.875h5.25c1.035 0 1.875.84 1.875 1.875v8.25c0 1.035-.84 1.875-1.875 1.875h-5.25a1.875 1.875 0 01-1.875-1.875v-8.25zM3 16.125c0-1.036.84-1.875 1.875-1.875h5.25c1.036 0 1.875.84 1.875 1.875v2.25c0 1.035-.84 1.875-1.875 1.875h-5.25A1.875 1.875 0 013 18.375v-2.25z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <a href="/specialist" class="font-semibold text-gray-900">
+                    Specialist Dashboard
+                    <span class="absolute inset-0"></span>
+                  </a>
+                  <p class="text-gray-600">Manage your clients, meals and more</p>
+                </div>
+                <div class="flex flex-none items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-orange-600 transition ease-in-out">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+
+                </div>
+              </div>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>

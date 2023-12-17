@@ -10,8 +10,8 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
 <body class="font-sans antialiased">
   <div class="app">
-    <div class="bg-gray-50 h-screen">
-      <div class="flex relative isolate px-6 lg:px-8 min-h-full justify-center">
+    <div class="bg-gray-50 min-h-screen">
+      <div class="flex relative isolate py-6 px-6 lg:px-8 min-h-full justify-center">
         <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-blue-500 hover:text-blue-400 transition ease-in-out">

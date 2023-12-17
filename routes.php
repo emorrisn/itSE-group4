@@ -1,7 +1,9 @@
 <?php
 
 use App\Controllers\accountController;
-use App\Controllers\dashboardController;
+use App\Controllers\clientController;
+use App\Controllers\specialistController;
+use App\Controllers\searchController;
 
 /** 
  * routes.php
@@ -28,6 +30,9 @@ switch ($url) {
     case '/':
         require __DIR__ . '/Resources/Views/Pages/landing.php';
         break;
+    case '/search':
+        searchController::search();
+        break;
     case '/account/login':
         accountController::login();
         break;
@@ -47,25 +52,28 @@ switch ($url) {
         accountController::sendregister();
         break;
     case '/dashboard':
-        dashboardController::dashboard();
+        clientController::dashboard();
         break;
     case '/account':
         accountController::account();
         break;
     case '/my/pin':
-        dashboardController::pin();
+        clientController::pin();
         break;
     case '/my/pr':
-        dashboardController::personalTrainer();
+        clientController::personalTrainer();
         break;
     case '/reset/my/pin':
-        dashboardController::pin_reset();
+        clientController::pin_reset();
         break;
     case '/reset/my/trainer':
         accountController::trainer_reset();
         break;
     case '/edit/account':
         accountController::edit_account();
+        break;
+    case '/specialist':
+        specialistController::dashboard();
         break;
     default: // Any: 404
         http_response_code(404);

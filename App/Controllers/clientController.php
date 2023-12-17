@@ -13,7 +13,7 @@ use App\Models\User;
  * @category   Controllers
  * @since      Class available since Release 1.0.0
  */
-class dashboardController
+class clientController
 {
     public static function dashboard()
     {

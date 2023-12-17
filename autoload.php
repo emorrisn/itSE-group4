@@ -23,4 +23,6 @@ require_once(__DIR__ . "/App/Models/User.php");
 
 // Controller
 require_once(__DIR__ . "/App/Controllers/accountController.php");
-require_once(__DIR__ . "/App/Controllers/dashboardController.php");
+require_once(__DIR__ . "/App/Controllers/clientController.php");
+require_once(__DIR__ . "/App/Controllers/specialistController.php");
+require_once(__DIR__ . "/App/Controllers/searchController.php");
