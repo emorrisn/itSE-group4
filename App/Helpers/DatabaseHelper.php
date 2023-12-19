@@ -39,6 +39,21 @@ class DatabaseHelper
         }
     }
 
+    public function getAllTables()
+    {
+        $query = "SHOW TABLES";
+        $result = $this->query($query, false);
+
+        $tables = [];
+
+        foreach ($result as $row) {
+
+            $tables[] = $row['Tables_in_' . 'modernfit'];
+        }
+
+        return $tables;
+    }
+
     public function query($query, $associate, $params = [])
     {
         $statement = $this->connection->prepare($query);

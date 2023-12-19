@@ -1,9 +1,10 @@
 <?php
 
-use App\Controllers\accountController;
+use App\Controllers\adminController;
 use App\Controllers\clientController;
-use App\Controllers\specialistController;
 use App\Controllers\searchController;
+use App\Controllers\accountController;
+use App\Controllers\specialistController;
 
 /** 
  * routes.php
@@ -60,6 +61,9 @@ switch ($url) {
     case '/my/pin':
         clientController::pin();
         break;
+    case '/my/meals':
+        clientController::meals();
+        break;
     case '/my/pr':
         clientController::personalTrainer();
         break;
@@ -74,6 +78,9 @@ switch ($url) {
         break;
     case '/specialist':
         specialistController::dashboard();
+        break;
+    case '/admin':
+        adminController::dashboard();
         break;
     default: // Any: 404
         http_response_code(404);

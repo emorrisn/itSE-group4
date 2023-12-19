@@ -26,3 +26,4 @@ require_once(__DIR__ . "/App/Controllers/accountController.php");
 require_once(__DIR__ . "/App/Controllers/clientController.php");
 require_once(__DIR__ . "/App/Controllers/specialistController.php");
 require_once(__DIR__ . "/App/Controllers/searchController.php");
+require_once(__DIR__ . "/App/Controllers/adminController.php");

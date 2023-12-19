@@ -1,3 +1,24 @@
 @tailwind base; 
 @tailwind components; 
 @tailwind utilities;
+
+.datepicker-picker {
+    width: 100%;
+}
+
+.days {
+    width: 100%;
+}
+
+.w-64.grid.grid-cols-7 {
+    width: 100% !important;
+}
+.datepicker-view {
+    width: 100% !important;
+}
+.day.next {
+    opacity: 0.5;
+}
+.day.prev {
+    opacity: 0.5;
+}

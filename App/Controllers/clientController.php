@@ -44,4 +44,10 @@ class clientController
         authenticationHelper::isAuth();
         return require __DIR__ . '../../../Resources/Views/Pages/client/personalTrainer.php';
     }
+
+    public static function meals()
+    {
+        authenticationHelper::isAuth();
+        return require __DIR__ . '../../../Resources/Views/Pages/client/meals/meals.php';
+    }
 }
