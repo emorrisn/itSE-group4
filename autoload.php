@@ -20,6 +20,8 @@ require_once(__DIR__ . "/App/Helpers/ValidationHelper.php");
 // Models
 require_once(__DIR__ . "/App/Models/Model.php");
 require_once(__DIR__ . "/App/Models/User.php");
+require_once(__DIR__ . "/App/Models/UserDiet.php");
+require_once(__DIR__ . "/App/Models/Diet.php");
 
 // Controller
 require_once(__DIR__ . "/App/Controllers/accountController.php");

@@ -9,8 +9,29 @@
 <?php
 
 use App\Helpers\AuthenticationHelper;
+use App\Models\Diet;
 
 include_once(__DIR__ . "\..\..\..\Headers\landing.php");
+
+if (isset($_GET['date'])) {
+  // Check if the date request is present and is a previous date
+  if ($_GET['date'] && strtotime($_GET['date']) < strtotime('today')) {
+    $logTab = '';
+    $targetTab = 'hidden';
+    $logBtn = 'active';
+    $targetBtn = '';
+  } else {
+    $logTab = 'hidden';
+    $targetTab = '';
+    $logBtn = '';
+    $targetBtn = 'active';
+  }
+} else {
+  $logTab = 'hidden';
+  $targetTab = '';
+  $logBtn = '';
+  $targetBtn = 'active';
+}
 ?>
 
 <body class="font-sans antialiased">
@@ -33,21 +54,25 @@ include_once(__DIR__ . "\..\..\..\Headers\landing.php");
           </div>
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <div inline-datepicker data-date="<?php echo date("m/d/Y"); ?>" class="w-full"></div>
+            <?php if (isset($_REQUEST['date'])) : ?>
+              <div id="datepicker" inline-datepicker data-date="<?php echo $_REQUEST['date']; ?>" class="w-full"></div>
+            <?php else : ?>
+              <div id="datepicker" inline-datepicker data-date="<?php echo date("m/d/Y"); ?>" class="w-full"></div>
+            <?php endif; ?>
           </div>
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <nav class="relative z-0 flex shadow rounded-xl overflow-hidden" aria-label="Tabs" role="tablist">
-              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 active" id="bar-with-underline-item-1" data-hs-tab="#bar-with-underline-1" aria-controls="bar-with-underline-1" role="tab">
+              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 <?php echo ($logBtn); ?>" id="log-bar" data-hs-tab="#log" aria-controls="log" role="tab">
                 Meal Log
               </button>
-              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400" id="bar-with-underline-item-2" data-hs-tab="#bar-with-underline-2" aria-controls="bar-with-underline-2" role="tab">
+              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 <?php echo ($targetBtn); ?>" id="target-bar" data-hs-tab="#goals" aria-controls="goals" role="tab">
                 Meal Targets
               </button>
             </nav>
 
             <div class="mt-3">
-              <div id="bar-with-underline-1" role="tabpanel" aria-labelledby="bar-with-underline-item-1">
+              <div id="log" class="<?php echo $logTab; ?>" role=" tabpanel" aria-labelledby="log-bar">
                 <div class="flex items-center gap-x-2 text-md font-bold leading-9 tracking-tight text-gray-600 mt-3 text-center">
                   Atkins Diet
                 </div>
@@ -120,7 +145,8 @@ include_once(__DIR__ . "\..\..\..\Headers\landing.php");
                   </div>
                 </div>
               </div>
-              <div id="bar-with-underline-2" class="hidden" role="tabpanel" aria-labelledby="bar-with-underline-item-2">
+
+              <div id="goals" class="<?php echo $targetTab; ?>" role="tabpanel" aria-labelledby="target-bar">
                 <!-- Select diet -->
                 <div class="relative">
                   <select data-hs-select='{
@@ -134,17 +160,12 @@ include_once(__DIR__ . "\..\..\..\Headers\landing.php");
       "dropdownClasses": "mt-2 max-h-[300px] pb-1 px-1 space-y-0.5 z-20 w-full bg-white border border-gray-200 rounded-xl overflow-hidden overflow-y-auto shadow-2xl",
       "optionClasses": "py-2 px-4 w-full text-md text-gray-800 cursor-pointer hover:bg-gray-100 rounded-xl focus:outline-none focus:bg-gray-100 dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-gray-200 dark:focus:bg-slate-800",
       "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-gray-200\" data-title></div></div></div>"
-    }' class="hidden">
-
-                    <option value="1" data-hs-select-option='{
-      "icon": ""}'>
-                      Atkins diet
-                    </option>
-                    <option value="2" data-hs-select-option='{
-      "icon": ""}'>
-                      Keto diet
-                    </option>
-
+    }' class="hidden" id="dietSelector">
+                    <?php foreach (AuthenticationHelper::getUser()->userDiet() as $diet) : ?>
+                      <option value="<?php echo $diet->id ?>" data-hs-select-option='{"icon": ""}' <?php if ($_REQUEST['diet'] && $_REQUEST['diet'] == $diet->id) echo "selected"; ?>>
+                        <?php echo $diet->diet()->name; ?>
+                      </option>
+                    <?php endforeach; ?>
                   </select>
 
                   <div class="absolute top-1/2 end-3 -translate-y-1/2">
@@ -231,8 +252,55 @@ include_once(__DIR__ . "\..\..\..\Headers\landing.php");
         </div>
       </div>
     </div>
-
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Access the inline date picker instance
+      var datepickerElement = document.getElementById('datepicker');
+
+      setTimeout(function() {
+        var datepicker = datepickerElement.datepicker;
+        const selector = HSSelect.getInstance('#dietSelector');
+        selector.on('change', (val) => {
+          updateURLDiet(val);
+        });
+
+        // Check if the datepicker object is available
+        if (datepicker) {
+          // Listen to date changes
+          datepicker.element.addEventListener('changeDate', function(event) {
+            var selectedDate = event.detail.date;
+            console.log(selectedDate.toUTCString());
+            updateURLDate(selectedDate);
+          });
+        } else {
+          console.error('Datepicker object not found. Check Flowbite initialization.');
+        }
+      }, 1000);
+
+      function updateURLDiet(selectedDiet) {
+        var urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('diet', selectedDiet);
+        window.history.replaceState({}, '', '?' + urlParams.toString());
+        window.location.reload();
+      }
+
+      function updateURLDate(selectedDate) {
+        var urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('date', formatDate(selectedDate));
+        window.history.replaceState({}, '', '?' + urlParams.toString());
+        window.location.reload();
+      }
+
+      function formatDate(date) {
+        var month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+        var day = String(date.getDate()).padStart(2, '0');
+        var year = date.getFullYear();
+
+        return month + '/' + day + '/' + year;
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -17,6 +17,7 @@ class Exercise extends Model
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'name',
         'description',
         'category',

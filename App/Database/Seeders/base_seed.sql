@@ -20,16 +20,16 @@ VALUES
   (2, 'Squats', 'Bodyweight squats', 'Strength', 'None', 'Intermediate', 'video_url_2', 'Variation 2', '80-120', 'Maintain proper form', NOW(), NOW());
 
 -- Insert dummy data into the WorkoutExercise table
-INSERT INTO `WorkoutExercise` (`workout_id`, `exercise_id`, `sets`, `reps`, `rest_time_between_sets`, `created_at`, `updated_at`)
+INSERT INTO `WorkoutExercise` (`id`, `workout_id`, `exercise_id`, `sets`, `reps`, `rest_time_between_sets`, `created_at`, `updated_at`)
 VALUES
-  (1, 1, 3, 15, 60, NOW(), NOW()),
-  (2, 2, 4, 12, 45, NOW(), NOW());
+  (1, 1, 1, 3, 15, 60, NOW(), NOW()),
+  (2, 2, 2, 4, 12, 45, NOW(), NOW());
 
 -- Insert dummy data into the UserWorkout table
-INSERT INTO `UserWorkout` (`user_id`, `workout_id`, `status`, `completion_date`, `feedback_rating`, `user_comments`, `created_at`, `updated_at`)
+INSERT INTO `UserWorkout` (`id`, `user_id`, `workout_id`, `status`, `completion_date`, `feedback_rating`, `user_comments`, `created_at`, `updated_at`)
 VALUES
-  (2, 1, 'Completed', '2023-11-15', 5, 'Great workout!', NOW(), NOW()),
-  (3, 2, 'Scheduled', NULL, NULL, NULL, NOW(), NOW());
+  (1, 2, 1, 'Completed', '2023-11-15', 5, 'Great workout!', NOW(), NOW()),
+  (2, 3, 2, 'Scheduled', NULL, NULL, NULL, NOW(), NOW());
 
 -- Insert dummy data into the Diet table
 INSERT INTO `Diet` (`id`, `user_trainer_id`, `name`, `description`, `start_date`, `end_date`, `caloric_goal`, `dietician_comments`, `allowed_cheat_days`, `dietary_restrictions`, `created_at`, `updated_at`)
@@ -58,20 +58,20 @@ VALUES
   (3, 'Dinner', 'Salmon with Brown Rice', 'Omega-3 rich dinner', 500, 'None', 30, 'Bake salmon, serve with brown rice', NULL, false, NOW(), NOW());
 
 -- Insert dummy data into the DietMeal table
-INSERT INTO `DietMeal` (`diet_id`, `meal_id`, `order`, `created_at`, `updated_at`)
+INSERT INTO `DietMeal` (`id`, `diet_id`, `meal_id`, `order`, `created_at`, `updated_at`)
 VALUES
- (1, 1, 1, NOW(), NOW()),
- (1, 2, 2, NOW(), NOW()),
- (2, 2, 1, NOW(), NOW()),
- (2, 3, 2, NOW(), NOW());
+ (1, 1, 1, 1, NOW(), NOW()),
+ (2, 1, 2, 2, NOW(), NOW()),
+ (3, 2, 2, 1, NOW(), NOW()),
+ (4, 2, 3, 2, NOW(), NOW());
 
 -- Insert dummy data into the MealFood table
-INSERT INTO `MealFood` (`meal_id`, `food_id`, `quantity`, `notes`, `created_at`, `updated_at`)
+INSERT INTO `MealFood` (`id`, `meal_id`, `food_id`, `quantity`, `notes`, `created_at`, `updated_at`)
 VALUES
-  (1, 2, 1, 'Add extra berries for flavor', NOW(), NOW()),
-  (2, 1, 1, 'Use olive oil dressing', NOW(), NOW()),
-  (2, 3, 1, 'Grilled salmon fillet', NOW(), NOW()),
-  (3, 3, 1, 'Serve with a side of steamed vegetables', NOW(), NOW());
+  (1, 1, 2, 1, 'Add extra berries for flavor', NOW(), NOW()),
+  (2, 2, 1, 1, 'Use olive oil dressing', NOW(), NOW()),
+  (3, 2, 3, 1, 'Grilled salmon fillet', NOW(), NOW()),
+  (4, 3, 3, 1, 'Serve with a side of steamed vegetables', NOW(), NOW());
 
 -- Insert dummy data into the MealLog table
 INSERT INTO `MealLog` (`id`, `user_id`, `diet_id`, `meal_id`, `time_of_consumption`, `satisfaction_level`, `location_of_consumption`, `mood_during_consumption`, `additional_comments`, `created_at`, `updated_at`)

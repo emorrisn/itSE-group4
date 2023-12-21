@@ -54,7 +54,7 @@ class DatabaseHelper
         return $tables;
     }
 
-    public function query($query, $associate, $params = [])
+    public function query($query, $associate = false, $params = [])
     {
         $statement = $this->connection->prepare($query);
 
@@ -74,6 +74,7 @@ class DatabaseHelper
         if ($associate) {
             $results = $results->fetch_assoc();
         } else {
+
             $results = $results->fetch_all(MYSQLI_ASSOC);
         }
 

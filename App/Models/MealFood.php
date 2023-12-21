@@ -16,6 +16,7 @@ class MealFood extends Model
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'meal_id',
         'food_id',
         'quantity',

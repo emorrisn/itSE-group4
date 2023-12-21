@@ -16,6 +16,7 @@ class UserDiet extends Model
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'user_id',
         'diet_id',
         'user_trainer_id',

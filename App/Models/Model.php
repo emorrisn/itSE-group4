@@ -17,7 +17,7 @@ abstract class Model
     protected $table;
     protected $primaryKey;
     protected $timestamps = true;
-    protected $query;
+    public $query;
     protected $fillable = [];
     protected $columns = [];
     protected $attributes = [];
@@ -57,14 +57,36 @@ abstract class Model
     {
         $relatedModel = new $relatedModel();
 
-        if ($this->{$localKey}) {
-            // No local value set...
+        if (!$this->{$localKey}) {
+            // No local value set
+            return null;
         }
 
-        $data = $relatedModel->query->from($relatedModel->table)->where($foreignKey, '=', $this->{$localKey});
-        $relatedModel->fill($data->get());
+        $data = $relatedModel->query->from($relatedModel->table)->where($foreignKey, '=', $this->{$localKey})->get();
+
+        if (!$data) {
+            // Handle the case where no related model is found
+            return null;
+        }
+
+        $relatedModel->fill($data);
 
         return $relatedModel;
+    }
+
+    public function hasMany($relatedModel, $foreignKey, $localKey = "id")
+    {
+        $relatedModel = new $relatedModel();
+        $data = $relatedModel->query->from($relatedModel->table)->where($foreignKey, '=', $this->{$localKey})->get(false);
+        $results = [];
+
+        foreach ($data as $key => $value) {
+            $model = new $relatedModel();
+            $model->fill($value);
+            $results[] = $model;
+        }
+
+        return $results;
     }
 
     public function create($data = [])
@@ -122,7 +144,7 @@ abstract class Model
 class QueryBuilder
 {
     protected $table;
-    protected $connection;
+    protected DatabaseHelper $connection;
     public $conditions = [];
     protected $limit;
     protected $orderBy;
@@ -162,7 +184,7 @@ class QueryBuilder
         return $this;
     }
 
-    public function get()
+    public function get($associate = true)
     {
         $queryString = 'SELECT * FROM ' . $this->table . ' ';
 
@@ -184,10 +206,12 @@ class QueryBuilder
             $queryString .= " LIMIT $this->limit";
         }
 
-        $results = $this->executeQuery($queryString, $this->getBindParams());
+
+        $results = $this->executeQuery($queryString, $associate, $this->getBindParams());
 
         return $results;
     }
+
 
     private function getBindParams()
     {
@@ -201,9 +225,9 @@ class QueryBuilder
         return $params;
     }
 
-    private function executeQuery($queryString, $params = [])
+    private function executeQuery($queryString, $associate, $params = [])
     {
-        return $this->connection->query($queryString, true, $params);
+        return $this->connection->query($queryString, $associate, $params);
     }
 }
 

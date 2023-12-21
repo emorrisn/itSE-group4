@@ -40,7 +40,10 @@ class User extends Model
     ];
 
     // Relationships
-
+    public function userDiet()
+    {
+        return $this->hasMany(UserDiet::class, 'user_id', 'id');
+    }
 
     public function trainer()
     {

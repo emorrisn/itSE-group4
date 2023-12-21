@@ -56,6 +56,7 @@ CREATE TABLE `Exercise` (
 );
 
 CREATE TABLE `WorkoutExercise` (
+  `id` int PRIMARY KEY,
   `workout_id` int,
   `exercise_id` int,
   `sets` int,
@@ -66,6 +67,7 @@ CREATE TABLE `WorkoutExercise` (
 );
 
 CREATE TABLE `UserWorkout` (
+  `id` int PRIMARY KEY,
   `user_id` int,
   `workout_id` int,
   `status` varchar(20),
@@ -108,6 +110,7 @@ CREATE TABLE `Diet` (
 );
 
 CREATE TABLE `UserDiet` (
+  `id` int PRIMARY KEY,
   `user_id` int,
   `diet_id` int,
   `user_trainer_id` int,
@@ -163,6 +166,7 @@ CREATE TABLE `Food` (
 );
 
 CREATE TABLE `DietMeal` (
+  `id` int PRIMARY KEY,
   `diet_id` int,
   `meal_id` int,
   `order` int,
@@ -171,6 +175,7 @@ CREATE TABLE `DietMeal` (
 );
 
 CREATE TABLE `MealFood` (
+  `id` int PRIMARY KEY,
   `meal_id` int,
   `food_id` int,
   `quantity` int,

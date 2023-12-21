@@ -17,6 +17,7 @@ class ExerciseLog extends Model
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'exercise_id',
         'workout_id',
         'user_id',
