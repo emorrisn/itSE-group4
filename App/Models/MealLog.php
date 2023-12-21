@@ -37,4 +37,9 @@ class MealLog extends Model
     {
         return $this->belongsTo(Meal::class, 'id', 'meal_id');
     }
+
+    public function diet()
+    {
+        return $this->belongsTo(Diet::class, 'id', 'diet_id');
+    }
 }

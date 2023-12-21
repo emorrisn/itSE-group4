@@ -11,7 +11,7 @@ namespace App\Models;
  */
 class Diet extends Model
 {
-    protected $table = 'Diet';
+    public $table = 'Diet';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
@@ -33,5 +33,21 @@ class Diet extends Model
     public function user_trainer()
     {
         return $this->belongsTo(User::class, 'id', 'user_trainer_id');
+    }
+
+    public function userDiet()
+    {
+        return $this->hasMany(DietMeal::class, 'diet_id', 'id');
+    }
+
+    public function meals()
+    {
+        $meals = [];
+
+        foreach ($this->hasMany(DietMeal::class, 'diet_id', 'id', 'order') as $dm) {
+            $meals[] = $dm->meal();
+        }
+
+        return $meals;
     }
 }

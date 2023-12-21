@@ -43,16 +43,6 @@ abstract class Model
         $this->attributes[$key] = $value;
     }
 
-    // public function belongsTo($relatedModel, $foreignKey)
-    // {
-    //     $relatedTable = (new \ReflectionClass($relatedModel))->getShortName();
-
-    //     $relatedModel = new $relatedModel();
-    //     $relatedModel->where($foreignKey, '=', $this->{$this->primaryKey});
-
-    //     return $relatedModel;
-    // }
-
     public function belongsTo($relatedModel, $foreignKey = "id", $localKey)
     {
         $relatedModel = new $relatedModel();
@@ -74,10 +64,13 @@ abstract class Model
         return $relatedModel;
     }
 
-    public function hasMany($relatedModel, $foreignKey, $localKey = "id")
+    public function hasMany($relatedModel, $foreignKey, $localKey = "id", $orderBy = "id")
     {
         $relatedModel = new $relatedModel();
-        $data = $relatedModel->query->from($relatedModel->table)->where($foreignKey, '=', $this->{$localKey})->get(false);
+        $data = $relatedModel->query->from($relatedModel->table)
+            ->where($foreignKey, '=', $this->{$localKey})
+            ->orderBy($orderBy, 'asc')
+            ->get(false);
         $results = [];
 
         foreach ($data as $key => $value) {
@@ -180,7 +173,7 @@ class QueryBuilder
 
     public function orderBy($column, $direction = 'asc')
     {
-        $this->orderBy = "ORDER BY $column $direction";
+        $this->orderBy = "ORDER BY `$column` $direction";
         return $this;
     }
 

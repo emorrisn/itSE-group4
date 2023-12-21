@@ -21,21 +21,6 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
             <h2 class="flex items-center gap-x-2 text-3xl font-bold leading-9 tracking-tight text-gray-900">
               <div>Specialist Home</div>
             </h2>
-            <div class="mt-4">
-              <form class="" action="/search" method="GET">
-                <div class="mt-2">
-                  <div class="relative mt-2 rounded-xl shadow-sm">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                      </svg>
-                    </div>
-                    <input type="hidden" name="type" value="specialist">
-                    <input type="text" name="search" id="search" class="block w-full rounded-xl border-2 py-1.5 pl-9 pr-20 text-gray-900 border-gray-200 placeholder:text-gray-400 focus:border-2 focus:border-blue-400 sm:text-sm sm:leading-6 bg-gray-100 transition ease-in-out" placeholder="Search clients, workouts, exercises, meals and diets">
-                  </div>
-                </div>
-              </form>
-            </div>
           </div>
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="group relative flex gap-x-6 rounded-xl shadow-xl hover:shadow-lg bg-white p-4 items-center hover:bg-green-50 transition ease-in-out">

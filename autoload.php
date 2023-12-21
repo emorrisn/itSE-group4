@@ -22,6 +22,9 @@ require_once(__DIR__ . "/App/Models/Model.php");
 require_once(__DIR__ . "/App/Models/User.php");
 require_once(__DIR__ . "/App/Models/UserDiet.php");
 require_once(__DIR__ . "/App/Models/Diet.php");
+require_once(__DIR__ . "/App/Models/DietMeal.php");
+require_once(__DIR__ . "/App/Models/Meal.php");
+require_once(__DIR__ . "/App/Models/MealLog.php");
 
 // Controller
 require_once(__DIR__ . "/App/Controllers/accountController.php");

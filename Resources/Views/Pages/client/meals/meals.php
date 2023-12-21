@@ -32,6 +32,33 @@ if (isset($_GET['date'])) {
   $logBtn = '';
   $targetBtn = 'active';
 }
+
+if (isset($_REQUEST['diet'])) {
+  $diet = new Diet();
+
+  if (isset($_GET['date'])) {
+    $attributes = $diet->query->from($diet->table)
+      ->where('id', '=', $_REQUEST['diet'])
+      ->where('start_date', '<=', date_format(date_create($_GET['date']), "Y-m-d"))
+      ->where('end_date', '>=', date_format(date_create($_GET['date']), "Y-m-d"))
+      ->get();
+  } else {
+    $attributes = $diet->query->from($diet->table)
+      ->where('id', '=', $_REQUEST['diet'])
+      ->where('start_date', '<=', date("Y-m-d"))
+      ->where('end_date', '>=', date("Y-m-d"))
+      ->get();
+  }
+
+  if ($attributes != null) {
+    $diet->fill($attributes);
+    $meals = $diet->meals();
+  } else {
+    $meals = [];
+  }
+} else {
+  $meals = AuthenticationHelper::getUser()->userDiet()[0]->diet()->meals();
+}
 ?>
 
 <body class="font-sans antialiased">
@@ -73,76 +100,47 @@ if (isset($_GET['date'])) {
 
             <div class="mt-3">
               <div id="log" class="<?php echo $logTab; ?>" role=" tabpanel" aria-labelledby="log-bar">
-                <div class="flex items-center gap-x-2 text-md font-bold leading-9 tracking-tight text-gray-600 mt-3 text-center">
-                  Atkins Diet
-                </div>
                 <div class="rounded-xl shadow-xl overflow-hidden bg-white hover:shadow-lg mt-1">
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-orange-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
+                  <?php foreach (AuthenticationHelper::getUser()->mealLog() as $m) : ?>
+                    <div class="group relative flex gap-x-6 p-4 items-center hover:bg-gray-50 transition ease-in-out">
+                      <?php if ($m->meal()->type == 'Breakfast') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-orange-600 group-hover:fill-orange-200 transition ease-in-out" viewBox="0 0 640 512">
+                            <path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z" />
+                          </svg>
+                        </div>
+                      <?php elseif ($m->meal()->type == 'Lunch') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-green-100 group-hover:bg-green-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-green-600 group-hover:fill-green-200 transition ease-in-out" viewBox="0 0 640 512">
+                            <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 352h8.2c32.3-39.1 81.1-64 135.8-64c5.4 0 10.7 .2 16 .7V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM320 352H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H360.2C335.1 449.6 320 410.5 320 368c0-5.4 .2-10.7 .7-16l-.7 0zm320 16a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zM496 288c8.8 0 16 7.2 16 16v48h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H496c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16z" />
+                          </svg>
 
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-orange-600 group-hover:fill-orange-200 transition ease-in-out" viewBox="0 0 640 512">
-                        <path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z" />
-                      </svg>
+                        </div>
+                      <?php elseif ($m->meal()->type == 'Dinner') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-blue-100 group-hover:bg-blue-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blue-600 group-hover:fill-blue-200 transition ease-in-out" viewBox="0 0 448 512">
+                            <path d="M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z" />
+                          </svg>
 
-                    </div>
-                    <div>
-                      <p class="text-gray-600">Breakfast</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Oatmeal with Berries
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-orange-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
-
-                    </div>
-                  </div>
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-green-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-green-100 group-hover:bg-green-600 transition ease-in-out">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-green-600 group-hover:fill-green-200 transition ease-in-out" viewBox="0 0 640 512">
-                        <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 352h8.2c32.3-39.1 81.1-64 135.8-64c5.4 0 10.7 .2 16 .7V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM320 352H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H360.2C335.1 449.6 320 410.5 320 368c0-5.4 .2-10.7 .7-16l-.7 0zm320 16a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zM496 288c8.8 0 16 7.2 16 16v48h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H496c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16z" />
-                      </svg>
-
-                    </div>
-                    <div>
-
-                      <p class="text-gray-600">Lunch</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Grilled Chicken Salad
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-green-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
+                        </div>
+                      <?php endif; ?>
+                      <div>
+                        <p class="text-gray-600"><?php echo $m->meal()->description ?> <?php echo $m->meal()->type ?> (<?php echo $m->diet()->name ?>)</p>
+                        <a href="/my/pin" class="font-semibold text-gray-900">
+                          <?php echo $m->meal()->name ?>
+                          <span class="absolute inset-0"></span>
+                          <div class="font-normal">
+                            <?php echo date("F j, Y", strtotime($m->time_of_consumption)); ?>
+                          </div>
+                          <div class="font-normal">
+                            <?php echo date("h:i:s A", strtotime($m->time_of_consumption)); ?>
+                          </div>
+                        </a>
+                      </div>
 
                     </div>
-                  </div>
 
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-blue-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-blue-100 group-hover:bg-blue-600 transition ease-in-out">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blue-600 group-hover:fill-blue-200 transition ease-in-out" viewBox="0 0 448 512">
-                        <path d="M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z" />
-                      </svg>
-
-                    </div>
-                    <div>
-                      <p class="text-gray-600">Dinner</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Salmon with Brown Rice
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-blue-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
-
-                    </div>
-                  </div>
+                  <?php endforeach; ?>
                 </div>
               </div>
 
@@ -162,7 +160,7 @@ if (isset($_GET['date'])) {
       "optionTemplate": "<div><div class=\"flex items-center\"><div class=\"me-2\" data-icon></div><div class=\"text-gray-800 dark:text-gray-200\" data-title></div></div></div>"
     }' class="hidden" id="dietSelector">
                     <?php foreach (AuthenticationHelper::getUser()->userDiet() as $diet) : ?>
-                      <option value="<?php echo $diet->id ?>" data-hs-select-option='{"icon": ""}' <?php if ($_REQUEST['diet'] && $_REQUEST['diet'] == $diet->id) echo "selected"; ?>>
+                      <option value="<?php echo $diet->id ?>" data-hs-select-option='{"icon": ""}' <?php if (isset($_REQUEST['diet']) && $_REQUEST['diet'] == $diet->id) echo "selected"; ?>>
                         <?php echo $diet->diet()->name; ?>
                       </option>
                     <?php endforeach; ?>
@@ -176,79 +174,66 @@ if (isset($_GET['date'])) {
                   </div>
                 </div>
                 <div class="rounded-xl shadow-xl overflow-hidden bg-white hover:shadow-lg mt-4">
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-orange-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
+                  <?php foreach ($meals as $m) : ?>
+                    <div class="group relative flex gap-x-6 p-4 items-center hover:bg-gray-50 transition ease-in-out">
+                      <?php if ($m->type == 'Breakfast') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-orange-100 group-hover:bg-orange-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-orange-600 group-hover:fill-orange-200 transition ease-in-out" viewBox="0 0 640 512">
+                            <path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z" />
+                          </svg>
+                        </div>
+                      <?php elseif ($m->type == 'Lunch') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-green-100 group-hover:bg-green-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-green-600 group-hover:fill-green-200 transition ease-in-out" viewBox="0 0 640 512">
+                            <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 352h8.2c32.3-39.1 81.1-64 135.8-64c5.4 0 10.7 .2 16 .7V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM320 352H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H360.2C335.1 449.6 320 410.5 320 368c0-5.4 .2-10.7 .7-16l-.7 0zm320 16a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zM496 288c8.8 0 16 7.2 16 16v48h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H496c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16z" />
+                          </svg>
 
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-orange-600 group-hover:fill-orange-200 transition ease-in-out" viewBox="0 0 640 512">
-                        <path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z" />
-                      </svg>
+                        </div>
+                      <?php elseif ($m->type == 'Dinner') : ?>
+                        <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-blue-100 group-hover:bg-blue-600 transition ease-in-out">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blue-600 group-hover:fill-blue-200 transition ease-in-out" viewBox="0 0 448 512">
+                            <path d="M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z" />
+                          </svg>
 
-                    </div>
-                    <div>
-                      <p class="text-gray-600">Healthy breakfast</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Oatmeal with Berries
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-orange-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
+                        </div>
+                      <?php endif; ?>
+                      <div>
+                        <p class="text-gray-600"><?php echo $m->description ?> <?php echo $m->type ?></p>
+                        <a href="/my/pin" class="font-semibold text-gray-900">
+                          <?php echo $m->name ?>
+                          <span class="absolute inset-0"></span>
+                        </a>
+                      </div>
+                      <div class="flex flex-none items-center justify-center ml-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-gray-600 transition ease-in-out">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
 
+                      </div>
                     </div>
-                  </div>
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-green-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-green-100 group-hover:bg-green-600 transition ease-in-out">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-green-600 group-hover:fill-green-200 transition ease-in-out" viewBox="0 0 640 512">
-                        <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 352h8.2c32.3-39.1 81.1-64 135.8-64c5.4 0 10.7 .2 16 .7V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM320 352H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H360.2C335.1 449.6 320 410.5 320 368c0-5.4 .2-10.7 .7-16l-.7 0zm320 16a144 144 0 1 0 -288 0 144 144 0 1 0 288 0zM496 288c8.8 0 16 7.2 16 16v48h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H496c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16z" />
-                      </svg>
+                  <?php endforeach; ?>
+                  <?php if ($meals == []) : ?>
+                    <div class="group relative flex gap-x-6 p-4 items-center ">
+                      <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-red-100 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-red-600 " viewBox="0 0 448 512">
+                          <path d="M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z" />
+                        </svg>
 
-                    </div>
-                    <div>
-                      <p class="text-gray-600">Protein-packed lunch</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Grilled Chicken Salad
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-green-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
-
-                    </div>
-                  </div>
-
-                  <div class="group relative flex gap-x-6 p-4 items-center hover:bg-blue-50 transition ease-in-out">
-                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-blue-100 group-hover:bg-blue-600 transition ease-in-out">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-blue-600 group-hover:fill-blue-200 transition ease-in-out" viewBox="0 0 448 512">
-                        <path d="M416 0C400 0 288 32 288 176V288c0 35.3 28.7 64 64 64h32V480c0 17.7 14.3 32 32 32s32-14.3 32-32V352 240 32c0-17.7-14.3-32-32-32zM64 16C64 7.8 57.9 1 49.7 .1S34.2 4.6 32.4 12.5L2.1 148.8C.7 155.1 0 161.5 0 167.9c0 45.9 35.1 83.6 80 87.7V480c0 17.7 14.3 32 32 32s32-14.3 32-32V255.6c44.9-4.1 80-41.8 80-87.7c0-6.4-.7-12.8-2.1-19.1L191.6 12.5c-1.8-8-9.3-13.3-17.4-12.4S160 7.8 160 16V150.2c0 5.4-4.4 9.8-9.8 9.8c-5.1 0-9.3-3.9-9.8-9L127.9 14.6C127.2 6.3 120.3 0 112 0s-15.2 6.3-15.9 14.6L83.7 151c-.5 5.1-4.7 9-9.8 9c-5.4 0-9.8-4.4-9.8-9.8V16zm48.3 152l-.3 0-.3 0 .3-.7 .3 .7z" />
-                      </svg>
-
-                    </div>
-                    <div>
-                      <p class="text-gray-600">Omega-3 rich dinner</p>
-                      <a href="/my/pin" class="font-semibold text-gray-900">
-                        Salmon with Brown Rice
-                        <span class="absolute inset-0"></span>
-                      </a>
-                    </div>
-                    <div class="flex flex-none items-center justify-center ml-auto">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-500 group-hover:text-blue-600 transition ease-in-out">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                      </svg>
+                      </div>
+                      <div>
+                        <p class="text-gray-600">Whoops</p>
+                        <span class="font-semibold text-gray-900">
+                          It appears you have no meals which coincide with this date and diet.
+                          <span class="absolute inset-0"></span>
+                        </span>
+                      </div>
 
                     </div>
-                  </div>
+                  <?php endif; ?>
                 </div>
-
-
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </div>
