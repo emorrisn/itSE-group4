@@ -192,7 +192,7 @@ if (isset($_REQUEST['diet'])) {
                           <?php endif; ?>
                           <div>
                             <p class="text-gray-600"><?php echo $m->meal()->description ?> <?php echo $m->meal()->type ?> (<?php echo $m->diet()->name ?>)</p>
-                            <a href="/view/log?meal=<?php echo $m->id ?>" class="font-semibold text-gray-900">
+                            <a href="/view/log?meal=<?php echo $m->meal()->id ?>" class="font-semibold text-gray-900">
                               <?php echo $m->meal()->name ?>
                               <span class="absolute inset-0"></span>
                               <div class="font-normal">
@@ -282,7 +282,7 @@ if (isset($_REQUEST['diet'])) {
                       <?php endif; ?>
                       <div>
                         <p class="text-gray-600"><?php echo $m->description ?> <?php echo $m->type ?></p>
-                        <a href="/view/meal?diet=<?php echo $diet->id ?>&meal=<?php echo $m->id ?>" class="font-semibold text-gray-900">
+                        <a href="/view/log?meal=<?php echo $m->id ?>" class="font-semibold text-gray-900">
                           <?php echo $m->name ?>
                           <span class="absolute inset-0"></span>
                         </a>
