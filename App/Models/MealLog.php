@@ -11,12 +11,13 @@ namespace App\Models;
  */
 class MealLog extends Model
 {
-    protected $table = 'MealLog';
+    public $table = 'MealLog';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'user_id',
         'diet_id',
         'meal_id',
@@ -25,6 +26,8 @@ class MealLog extends Model
         'location_of_consumption',
         'mood_during_consumption',
         'additional_comments',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships
