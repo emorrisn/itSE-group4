@@ -22,6 +22,8 @@ class WorkoutExercise extends Model
         'sets',
         'reps',
         'rest_time_between_sets',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

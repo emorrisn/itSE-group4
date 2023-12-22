@@ -64,6 +64,9 @@ switch ($url) {
     case '/my/meals':
         clientController::meals();
         break;
+    case '/my/workouts':
+        clientController::workouts();
+        break;
     case '/my/meals/new':
         clientController::meals_new();
         break;

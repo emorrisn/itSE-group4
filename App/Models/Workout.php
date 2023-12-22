@@ -24,8 +24,10 @@ class Workout extends Model
         'intensity_level',
         'targeted_muscle_groups',
         'location',
-        'recommended_frequency',
+        // 'recommended_frequency',
         'recommended_intensity_range',
         'required_equipment',
+        'created_at',
+        'updated_at'
     ];
 }

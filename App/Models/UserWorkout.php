@@ -18,10 +18,14 @@ class UserWorkout extends Model
     protected $fillable = [
         'user_id',
         'workout_id',
-        'status',
+        // 'status',
+        'start_date', // TODO: Add to db
         'completion_date',
+        'days', // TODO: add to db (e.g. monday, tuesday, wednesday, etc.) then just check if current date is in array
         'feedback_rating',
         'user_comments',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

@@ -27,5 +27,7 @@ class Exercise extends Model
         'exercise_variation',
         'target_heart_rate_range',
         'recommended_form_tips',
+        'created_at',
+        'updated_at'
     ];
 }

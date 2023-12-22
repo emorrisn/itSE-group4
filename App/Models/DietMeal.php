@@ -20,6 +20,8 @@ class DietMeal extends Model
         'diet_id',
         'meal_id',
         'order',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

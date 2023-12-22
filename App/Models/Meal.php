@@ -27,5 +27,7 @@ class Meal extends Model
         'cooking_instructions',
         'recipe_link',
         'vegetarian_indicator',
+        'created_at',
+        'updated_at'
     ];
 }

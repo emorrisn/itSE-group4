@@ -22,6 +22,8 @@ class UserDiet extends Model
         'user_trainer_id',
         'status',
         'completion_date',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

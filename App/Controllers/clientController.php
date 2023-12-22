@@ -53,6 +53,12 @@ class clientController
         return require __DIR__ . '../../../Resources/Views/Pages/client/meals/meals.php';
     }
 
+    public static function workouts()
+    {
+        authenticationHelper::isAuth();
+        return require __DIR__ . '../../../Resources/Views/Pages/client/workouts/workouts.php';
+    }
+
     public static function meals_new()
     {
         authenticationHelper::isAuth();

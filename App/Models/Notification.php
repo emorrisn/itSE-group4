@@ -22,6 +22,8 @@ class Notification extends Model
         'content',
         'delivery_status',
         'timestamp',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

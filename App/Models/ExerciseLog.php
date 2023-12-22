@@ -28,6 +28,8 @@ class ExerciseLog extends Model
         'perceived_difficulty_level',
         'fatigue_level',
         'motivation_level',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships

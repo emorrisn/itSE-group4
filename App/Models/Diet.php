@@ -27,6 +27,8 @@ class Diet extends Model
         'dietician_comments',
         'allowed_cheat_days',
         'dietary_restrictions',
+        'created_at',
+        'updated_at'
     ];
 
     // Relationships
