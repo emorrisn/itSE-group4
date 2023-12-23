@@ -11,17 +11,17 @@ namespace App\Models;
  */
 class UserWorkout extends Model
 {
-    protected $table = 'userworkout';
+    public $table = 'userworkout';
     public $timestamps = true;
 
     // Fillable fields
     protected $fillable = [
+        'id',
         'user_id',
         'workout_id',
-        // 'status',
-        'start_date', // TODO: Add to db
+        'start_date',
         'completion_date',
-        'days', // TODO: add to db (e.g. monday, tuesday, wednesday, etc.) then just check if current date is in array
+        'days',
         'feedback_rating',
         'user_comments',
         'created_at',
@@ -37,5 +37,10 @@ class UserWorkout extends Model
     public function workout()
     {
         return $this->belongsTo(Workout::class, 'id', 'workout_id');
+    }
+
+    public function isComplete()
+    {
+        return false;
     }
 }

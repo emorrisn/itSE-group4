@@ -9,10 +9,37 @@
 <?php
 
 use App\Helpers\AuthenticationHelper;
-use App\Models\Diet;
-use App\Models\MealLog;
+use App\Models\UserWorkout;
 
 include_once(__DIR__ . "\..\..\..\Headers\landing.php");
+
+if (isset($_GET['date'])) {
+  $date = date_format(date_create($_GET['date']), "Y-m-d");
+  $dayNumber = date("N", strtotime($date));
+} else {
+  $date = date("Y-m-d");
+  $dayNumber = date("N");
+}
+
+$workout = new UserWorkout();
+$workouts = [];
+
+$attributes = $workout->query->from($workout->table)
+  ->where('start_date', '<=', $date)
+  ->where('completion_date', '>=', $date)
+  ->get(false);
+
+foreach ($attributes as $attribute) {
+  $new = new UserWorkout();
+  $new->fill($attribute);
+
+  if ($new->days != null) {
+    $days = explode(",", $new->days);
+    if (in_array($dayNumber, $days)) {
+      $workouts[] = $new;
+    }
+  }
+}
 
 ?>
 
@@ -45,33 +72,31 @@ include_once(__DIR__ . "\..\..\..\Headers\landing.php");
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="rounded-xl shadow-xl overflow-hidden hover:shadow-lg transition ease-in-out">
-              <div class="group relative flex gap-x-6 bg-white p-4 items-center hover:bg-teal-50 transition ease-in-out">
-                <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-teal-100 group-hover:bg-teal-600 transition ease-in-out">
-                  <span class="text-teal-600 group-hover:text-teal-200 transition ease-in-out text-lg font-bold">#1</span>
+              <?php foreach ($workouts as $workout) : ?>
+                <div class="group relative flex gap-x-6 bg-white p-4 items-center hover:bg-gray-50 transition ease-in-out">
+                  <?php if ($workout->isComplete()) : ?>
+                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-teal-100 group-hover:bg-teal-600 transition ease-in-out">
+                      <span class="text-teal-600 group-hover:text-teal-200 transition ease-in-out text-lg font-bold"><?php echo $workout->id; ?></span>
+                    </div>
+                  <?php else : ?>
+                    <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-gray-600 transition ease-in-out">
+                      <span class="text-gray-600 group-hover:text-gray-200 transition ease-in-out text-lg font-bold"><?php echo $workout->id; ?>
+                    </div>
+                  <?php endif; ?>
+                  <div>
+                    <a href="/view/workout?workout=<?php echo $workout->id; ?>" class="font-semibold text-gray-900">
+                      <?php if ($workout->isComplete()) : ?>
+                        <span class="text-green-600">Complete: </span>
+                      <?php endif; ?>
+                      <?php echo $workout->workout()->name; ?>
+                      <span class="absolute inset-0"></span>
+                    </a>
+                    <p class="text-gray-600"><?php echo $workout->workout()->description; ?></p>
+                    <p class="text-gray-600"><?php echo $workout->workout()->duration; ?> Mins - <?php echo $workout->workout()->recommended_intensity_range; ?> Intensity</p>
+                  </div>
                 </div>
-                <div>
-                  <a href="/my/meals" class="font-semibold text-gray-900">
-                    <span class="text-green-600">Complete: </span>
-                    Cardio Blast
-                    <span class="absolute inset-0"></span>
-                  </a>
-                  <p class="text-gray-600">High-intensity cardio workout</p>
-                  <p class="text-gray-600">30 Mins - High Intensity</p>
-                </div>
-              </div>
-              <div class="group relative flex gap-x-6 bg-white p-4 items-center hover:bg-gray-50 transition ease-in-out">
-                <div class="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-100 group-hover:bg-gray-600 transition ease-in-out">
-                  <span class="text-gray-600 group-hover:text-gray-200 transition ease-in-out text-lg font-bold">#2</span>
-                </div>
-                <div>
-                  <a href="/my/meals" class="font-semibold text-gray-900">
-                    Cardio Blast
-                    <span class="absolute inset-0"></span>
-                  </a>
-                  <p class="text-gray-600">High-intensity cardio workout</p>
-                  <p class="text-gray-600">30 Mins - High Intensity</p>
-                </div>
-              </div>
+              <?php endforeach; ?>
+
             </div>
           </div>
 

@@ -8,10 +8,10 @@ VALUES
 -- password(trainer): trainer_password
 
 -- Insert dummy data into the Workout table
-INSERT INTO `Workout` (`id`, `name`, `description`, `duration`, `intensity_level`, `targeted_muscle_groups`, `location`, `recommended_frequency`, `recommended_intensity_range`, `required_equipment`, `created_at`, `updated_at`)
+INSERT INTO `Workout` (`id`, `name`, `description`, `duration`, `intensity_level`, `targeted_muscle_groups`, `location`, `recommended_intensity_range`, `required_equipment`, `created_at`, `updated_at`)
 VALUES
-  (1, 'Cardio Blast', 'High-intensity cardio workout', 30, 'High', 'Cardio', 'Gym', '3 times per week', 'High', 'Treadmill', NOW(), NOW()),
-  (2, 'Strength Training', 'Full-body strength workout', 45, 'Moderate', 'Full Body', 'Home', '2 times per week', 'Moderate', 'Dumbbells', NOW(), NOW());
+  (1, 'Cardio Blast', 'High-intensity cardio workout', 30, 'High', 'Cardio', 'Gym', 'High', 'Treadmill', NOW(), NOW()),
+  (2, 'Strength Training', 'Full-body strength workout', 45, 'Moderate', 'Full Body', 'Home', 'Moderate', 'Dumbbells', NOW(), NOW());
 
 -- Insert dummy data into the Exercise table
 INSERT INTO `Exercise` (`id`, `name`, `description`, `category`, `equipment_needed`, `difficulty_level`, `demonstration_video_url`, `exercise_variation`, `target_heart_rate_range`, `recommended_form_tips`, `created_at`, `updated_at`)
@@ -26,10 +26,10 @@ VALUES
   (2, 2, 2, 4, 12, 45, NOW(), NOW());
 
 -- Insert dummy data into the UserWorkout table
-INSERT INTO `UserWorkout` (`id`, `user_id`, `workout_id`, `status`, `completion_date`, `feedback_rating`, `user_comments`, `created_at`, `updated_at`)
+INSERT INTO `UserWorkout` (`id`, `user_id`, `workout_id`, `start_date`, `completion_date`, `days`, `feedback_rating`, `user_comments`, `created_at`, `updated_at`)
 VALUES
-  (1, 2, 1, 'Completed', '2023-11-15', 5, 'Great workout!', NOW(), NOW()),
-  (2, 3, 2, 'Scheduled', NULL, NULL, NULL, NOW(), NOW());
+  (1, 2, 1, '2023-11-15', '2023-11-15', '1,2,3,4,5,6,7', 5, 'Great workout!', NOW(), NOW()),
+  (2, 3, 2, '2023-11-17', '2023-11-17', '1,2,4,5,7', 4, NULL, NOW(), NOW());
 
 -- Insert dummy data into the Diet table
 INSERT INTO `Diet` (`id`, `user_trainer_id`, `name`, `description`, `start_date`, `end_date`, `caloric_goal`, `dietician_comments`, `allowed_cheat_days`, `dietary_restrictions`, `created_at`, `updated_at`)

@@ -45,6 +45,11 @@ class User extends Model
         return $this->hasMany(UserDiet::class, 'user_id', 'id');
     }
 
+    public function userWorkout()
+    {
+        return $this->hasMany(UserWorkout::class, 'user_id', 'id');
+    }
+
     public function mealLog()
     {
         return $this->hasMany(MealLog::class, 'user_id', 'id');

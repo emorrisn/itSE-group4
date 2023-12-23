@@ -58,7 +58,12 @@ if (isset($_REQUEST['diet'])) {
     $meals = [];
   }
 } else {
-  $meals = AuthenticationHelper::getUser()->userDiet()[0]->diet()->meals();
+  $meals = AuthenticationHelper::getUser()->userDiet();
+  if ($meals != null) {
+    $meals = $meals[0]->diet()->meals();
+  } else {
+    $meals = [];
+  }
 }
 
 

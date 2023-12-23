@@ -24,10 +24,20 @@ class Workout extends Model
         'intensity_level',
         'targeted_muscle_groups',
         'location',
-        // 'recommended_frequency',
         'recommended_intensity_range',
         'required_equipment',
         'created_at',
         'updated_at'
     ];
+
+    public function excercises()
+    {
+        $excercises = [];
+
+        foreach ($this->hasMany(WorkoutExercise::class, 'workout_id', 'id') as $uw) {
+            $excercises[] = $uw->exercise();
+        }
+
+        return $excercises;
+    }
 }
