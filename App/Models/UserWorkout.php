@@ -15,7 +15,7 @@ class UserWorkout extends Model
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'user_id',
         'workout_id',
@@ -39,8 +39,28 @@ class UserWorkout extends Model
         return $this->belongsTo(Workout::class, 'id', 'workout_id');
     }
 
-    public function isComplete()
+    public function isComplete($date)
     {
+        $history = new ExerciseLog();
+        $historys = [];
+
+        $attributes = $history->query->from($history->table)
+            ->where('workout_id', '<=', $this->workout()->id)
+            ->where('user_id', '<=', $this->user()->id)
+            ->where('created_at', '=', $date)
+            ->get(false);
+
+
+        foreach ($attributes as $attribute) {
+            $new = new ExerciseLog();
+            $new->fill($attribute);
+            $historys[] = $new;
+        }
+
+        if (count($historys) > 0) {
+            return true;
+        }
+
         return false;
     }
 }

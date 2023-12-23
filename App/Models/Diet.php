@@ -12,11 +12,11 @@ namespace App\Models;
 class Diet extends Model
 {
     public $table = 'Diet';
-    protected $primaryKey = 'id';
+    public $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'user_trainer_id',
         'name',

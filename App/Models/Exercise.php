@@ -11,12 +11,12 @@ namespace App\Models;
  */
 class Exercise extends Model
 {
-    protected $table = 'exercise';
-    protected $primaryKey = 'id';
+    public $table = 'exercise';
+    public $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'name',
         'description',

@@ -11,11 +11,11 @@ namespace App\Models;
  */
 class UserDiet extends Model
 {
-    protected $table = 'UserDiet';
+    public $table = 'UserDiet';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'user_id',
         'diet_id',

@@ -12,12 +12,13 @@ namespace App\Models;
 class Workout extends Model
 {
 
-    protected $table = 'workout';
-    protected $primaryKey = 'id';
+    public $table = 'workout';
+    public $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
+        'id',
         'name',
         'description',
         'duration',
@@ -39,5 +40,10 @@ class Workout extends Model
         }
 
         return $excercises;
+    }
+
+    public function userWorkouts()
+    {
+        return $this->hasMany(UserWorkout::class, 'workout_id', 'id');
     }
 }

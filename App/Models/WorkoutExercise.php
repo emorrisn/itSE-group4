@@ -12,11 +12,11 @@ namespace App\Models;
 class WorkoutExercise extends Model
 {
 
-    protected $table = 'workoutexercise';
+    public $table = 'workoutexercise';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'workout_id',
         'exercise_id',
         'sets',

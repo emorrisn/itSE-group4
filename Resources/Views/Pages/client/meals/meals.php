@@ -9,63 +9,8 @@
 <?php
 
 use App\Helpers\AuthenticationHelper;
-use App\Models\Diet;
-use App\Models\MealLog;
 
 include_once(__DIR__ . "\..\..\..\Headers\landing.php");
-
-if (isset($_GET['date'])) {
-  // Check if the date request is present and is a previous date
-  if ($_GET['date'] && strtotime($_GET['date']) < strtotime('today')) {
-    $logTab = '';
-    $targetTab = 'hidden';
-    $logBtn = 'active';
-    $targetBtn = '';
-  } else {
-    $logTab = 'hidden';
-    $targetTab = '';
-    $logBtn = '';
-    $targetBtn = 'active';
-  }
-} else {
-  $logTab = 'hidden';
-  $targetTab = '';
-  $logBtn = '';
-  $targetBtn = 'active';
-}
-
-if (isset($_REQUEST['diet'])) {
-  $diet = new Diet();
-
-  if (isset($_GET['date'])) {
-    $attributes = $diet->query->from($diet->table)
-      ->where('id', '=', $_REQUEST['diet'])
-      ->where('start_date', '<=', date_format(date_create($_GET['date']), "Y-m-d"))
-      ->where('end_date', '>=', date_format(date_create($_GET['date']), "Y-m-d"))
-      ->get();
-  } else {
-    $attributes = $diet->query->from($diet->table)
-      ->where('id', '=', $_REQUEST['diet'])
-      ->where('start_date', '<=', date("Y-m-d"))
-      ->where('end_date', '>=', date("Y-m-d"))
-      ->get();
-  }
-
-  if ($attributes != null) {
-    $diet->fill($attributes);
-    $meals = $diet->meals();
-  } else {
-    $meals = [];
-  }
-} else {
-  $meals = AuthenticationHelper::getUser()->userDiet();
-  if ($meals != null) {
-    $meals = $meals[0]->diet()->meals();
-  } else {
-    $meals = [];
-  }
-}
-
 
 ?>
 
@@ -103,7 +48,7 @@ if (isset($_REQUEST['diet'])) {
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <nav class="relative z-0 flex shadow rounded-xl overflow-hidden" aria-label="Tabs" role="tablist">
-              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 <?php echo ($logBtn); ?>" id="log-bar" data-hs-tab="#log" aria-controls="log" role="tab">
+              <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400  dark:hover:text-gray-400 <?php echo ($logBtn); ?>" id="log-bar" data-hs-tab="#log" aria-controls="log" role="tab">
                 Meal Log
               </button>
               <button type="button" class="hs-tab-active:border-b-blue-600 hs-tab-active:text-gray-900 dark:hs-tab-active:text-white dark:hs-tab-active:border-b-blue-600 relative min-w-0 flex-1 bg-white first:border-s-0 border-s border-b-2 py-4 px-4 text-gray-500 hover:text-gray-700 text-sm font-medium text-center overflow-hidden hover:bg-gray-50 focus:z-10 focus:outline-none focus:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-l-gray-700 dark:border-b-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-400 <?php echo ($targetBtn); ?>" id="target-bar" data-hs-tab="#goals" aria-controls="goals" role="tab">

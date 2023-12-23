@@ -11,12 +11,12 @@ namespace App\Models;
  */
 class Meal extends Model
 {
-    protected $table = 'Meal';
-    protected $primaryKey = 'id';
+    public $table = 'Meal';
+    public $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'type',
         'name',

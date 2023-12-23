@@ -64,6 +64,12 @@ switch ($url) {
     case '/my/meals':
         clientController::meals();
         break;
+    case '/view/workout':
+        clientController::workout_view();
+        break;
+    case '/new/workout':
+        clientController::workout_new();
+        break;
     case '/my/workouts':
         clientController::workouts();
         break;
@@ -93,6 +99,15 @@ switch ($url) {
         break;
     case '/admin':
         adminController::dashboard();
+        break;
+    case '/admin/table':
+        adminController::table();
+        break;
+    case '/admin/item':
+        adminController::item();
+        break;
+    case '/edit/item':
+        adminController::item_edit();
         break;
     default: // Any: 404
         http_response_code(404);

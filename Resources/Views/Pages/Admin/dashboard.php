@@ -3,22 +3,6 @@
 
 <?php
 
-use App\Helpers\AuthenticationHelper;
-
-$databaseHelper = new \App\Helpers\DatabaseHelper();
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$tables = $databaseHelper->getAllTables();
-
-if (!empty($search)) {
-  $filteredTables = [];
-  foreach ($tables as $tableName) {
-    if (strpos($tableName, $search) !== false) {
-      $filteredTables[] = $tableName;
-    }
-  }
-  $tables = $filteredTables;
-}
-
 include_once(__DIR__ . "\..\..\Headers\landing.php");
 ?>
 
@@ -65,7 +49,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
                   </div>
                   <div>
-                    <a href="/my/meals" class="font-semibold text-gray-900">
+                    <a href="/admin/table?table=<?= ucfirst($tableName) ?>" class="font-semibold text-gray-900">
                       <?= ucfirst($tableName) ?>
                       <span class="absolute inset-0"></span>
                     </a>

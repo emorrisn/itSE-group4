@@ -7,6 +7,10 @@ use App\Models\MealLog;
 use App\Helpers\DatabaseHelper;
 use App\Helpers\ValidationHelper;
 use App\Helpers\AuthenticationHelper;
+use App\Models\Diet;
+use App\Models\Meal;
+use App\Models\UserWorkout;
+use App\Models\Workout;
 
 /**
  * Deals with functions regarding dashboard
@@ -50,13 +54,156 @@ class clientController
     public static function meals()
     {
         authenticationHelper::isAuth();
+
+
+        if (isset($_GET['date'])) {
+            // Check if the date request is present and is a previous date
+            if ($_GET['date'] && strtotime($_GET['date']) < strtotime('today')) {
+                $logTab = '';
+                $targetTab = 'hidden';
+                $logBtn = 'active';
+                $targetBtn = '';
+            } else {
+                $logTab = 'hidden';
+                $targetTab = '';
+                $logBtn = '';
+                $targetBtn = 'active';
+            }
+        } else {
+            $logTab = 'hidden';
+            $targetTab = '';
+            $logBtn = '';
+            $targetBtn = 'active';
+        }
+
+        if (isset($_REQUEST['diet'])) {
+            $diet = new Diet();
+
+            if (isset($_GET['date'])) {
+                $attributes = $diet->query->from($diet->table)
+                    ->where('id', '=', $_REQUEST['diet'])
+                    ->where('start_date', '<=', date_format(date_create($_GET['date']), "Y-m-d"))
+                    ->where('end_date', '>=', date_format(date_create($_GET['date']), "Y-m-d"))
+                    ->get();
+            } else {
+                $attributes = $diet->query->from($diet->table)
+                    ->where('id', '=', $_REQUEST['diet'])
+                    ->where('start_date', '<=', date("Y-m-d"))
+                    ->where('end_date', '>=', date("Y-m-d"))
+                    ->get();
+            }
+
+            if ($attributes != null) {
+                $diet->fill($attributes);
+                $meals = $diet->meals();
+            } else {
+                $meals = [];
+            }
+        } else {
+            $meals = AuthenticationHelper::getUser()->userDiet();
+            if ($meals != null) {
+                $meals = $meals[0]->diet()->meals();
+            } else {
+                $meals = [];
+            }
+        }
+
+        $hasMeal = false;
+
+
         return require __DIR__ . '../../../Resources/Views/Pages/client/meals/meals.php';
     }
 
     public static function workouts()
     {
         authenticationHelper::isAuth();
+
+        if (isset($_GET['date'])) {
+            $date = date_format(date_create($_GET['date']), "Y-m-d");
+            $dayNumber = date("N", strtotime($date));
+        } else {
+            $date = date("Y-m-d");
+            $dayNumber = date("N");
+        }
+
+        $workout = new UserWorkout();
+        $workouts = [];
+
+        $attributes = $workout->query->from($workout->table)
+            ->where('start_date', '<=', $date)
+            ->where('completion_date', '>=', $date)
+            ->get(false);
+
+        foreach ($attributes as $attribute) {
+            $new = new UserWorkout();
+            $new->fill($attribute);
+
+            if ($new->days != null) {
+                $days = explode(",", $new->days);
+                if (in_array($dayNumber, $days)) {
+                    $workouts[] = $new;
+                }
+            }
+        }
+
+
         return require __DIR__ . '../../../Resources/Views/Pages/client/workouts/workouts.php';
+    }
+
+    public static function workout_view()
+    {
+        authenticationHelper::isAuth();
+
+        $workout = new Workout();
+
+        if (!isset($_GET['workout'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $attributes = $workout->query->from($workout->table)
+            ->where('id', '=', $_GET['workout'])
+            ->get();
+
+        if ($attributes != null) {
+            $workout->fill($attributes);
+        } else {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+
+        return require __DIR__ . '../../../Resources/Views/Pages/client/workouts/view.php';
+    }
+
+    public static function workout_new()
+    {
+        authenticationHelper::isAuth();
+
+
+        $workout = new Workout();
+
+        if (!isset($_GET['workout'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $attributes = $workout->query->from($workout->table)
+            ->where('id', '=', $_GET['workout'])
+            ->get();
+
+        if ($attributes != null) {
+            $workout->fill($attributes);
+        } else {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $excerciseLog = []; // needs to be for this user, for the current date and for this workout
+
+
+
+        return require __DIR__ . '../../../Resources/Views/Pages/client/workouts/new.php';
     }
 
     public static function meals_new()
@@ -68,6 +215,23 @@ class clientController
     public static function meal_view()
     {
         authenticationHelper::isAuth();
+        $currentMeal = new MealLog();
+
+        if (!isset($_GET['meal'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        $attributes = $currentMeal->query->from($currentMeal->table)
+            ->where('id', '=', $_GET['meal'])
+            ->get();
+
+        if ($attributes != null) {
+            $currentMeal->fill($attributes);
+        } else {
+            $meals = [];
+        }
+
         return require __DIR__ . '../../../Resources/Views/Pages/client/meals/view.php';
     }
 

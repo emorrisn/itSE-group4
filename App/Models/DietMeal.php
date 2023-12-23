@@ -11,11 +11,11 @@ namespace App\Models;
  */
 class DietMeal extends Model
 {
-    protected $table = 'DietMeal';
+    public $table = 'DietMeal';
     public $timestamps = true;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'id',
         'diet_id',
         'meal_id',

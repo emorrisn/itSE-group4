@@ -13,23 +13,6 @@ use App\Models\Diet;
 use App\Models\MealLog;
 
 include_once(__DIR__ . "\..\..\..\Headers\landing.php");
-
-$currentMeal = new MealLog();
-
-if (!isset($_GET['meal'])) {
-  header('Location: ' . $_SERVER['HTTP_REFERER']);
-  exit;
-}
-
-$attributes = $currentMeal->query->from($currentMeal->table)
-  ->where('id', '=', $_GET['meal'])
-  ->get();
-
-if ($attributes != null) {
-  $currentMeal->fill($attributes);
-} else {
-  $meals = [];
-}
 ?>
 
 <body class="font-sans antialiased">

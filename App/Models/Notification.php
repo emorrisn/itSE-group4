@@ -11,12 +11,12 @@ namespace App\Models;
  */
 class Notification extends Model
 {
-    protected $table = 'Notification';
-    protected $primaryKey = 'id';
+    public $table = 'Notification';
+    public $primaryKey = 'id';
     public $timestamps = false;
 
     // Fillable fields
-    protected $fillable = [
+    public $fillable = [
         'user_id',
         'type',
         'content',

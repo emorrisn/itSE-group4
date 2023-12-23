@@ -13,11 +13,11 @@ class User extends Model
 {
 
     public $table = 'user';
-    protected $primaryKey = 'id';
+    public $primaryKey = 'id';
     public $timestamps = true;
-    protected $attributes = [];
+    public $attributes = [];
 
-    protected $fillable = [
+    public $fillable = [
         'id',
         'type',
         'pin',
