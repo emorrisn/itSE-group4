@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
+use Exception;
+use App\Models\Diet;
+use App\Models\Meal;
 use App\Models\User;
 use App\Models\MealLog;
+use App\Models\Workout;
+use App\Models\Exercise;
+use App\Models\ExerciseLog;
+use App\Models\UserWorkout;
 use App\Helpers\DatabaseHelper;
 use App\Helpers\ValidationHelper;
 use App\Helpers\AuthenticationHelper;
-use App\Models\Diet;
-use App\Models\Meal;
-use App\Models\UserWorkout;
-use App\Models\Workout;
 
 /**
  * Deals with functions regarding dashboard
@@ -199,11 +202,136 @@ class clientController
             exit;
         }
 
-        $excerciseLog = []; // needs to be for this user, for the current date and for this workout
+        $exerciseLog = []; // needs to be for this user, for the current date and for this workout
+        $log = new ExerciseLog();
 
+        $attributes = $log->query->from($log->table)
+            ->where('user_id', '=', AuthenticationHelper::getUser()->id)
+            ->where('workout_id', '=', $_GET['workout'])
+            ->where('created_at', 'LIKE', date("Y-m-d") . '%')
+            ->get(false);
 
+        foreach ($attributes as $attribute) {
+            $new = new ExerciseLog();
+            $new->fill($attribute);
+            $exerciseLog[] = $new;
+        }
 
         return require __DIR__ . '../../../Resources/Views/Pages/client/workouts/new.php';
+    }
+
+    public static function workout_new_add()
+    {
+        authenticationHelper::isAuth();
+
+        if (!empty($_POST)) {
+
+            $validator = new ValidationHelper($_POST);
+
+            $validationRules = [
+                ['field' => 'workout', 'methods' => ['required'], 'message' => 'Workout is required.'],
+                ['field' => 'exercise', 'methods' => ['required'], 'message' => 'Invalid exercise.'],
+            ];
+
+            $validator->validate($validationRules);
+
+            if (!$validator->isValid()) {
+                $errorMessages = implode(', ', $validator->getErrors());
+                header("location: /new/workout?workout=" + $_POST['workout'] . "&error=" . urlencode($errorMessages));
+                exit();
+            }
+
+            $exerciseLog = new ExerciseLog();
+            $exerciseLog->create([
+                'user_id' => AuthenticationHelper::getUser()->id,
+                'workout_id' => $_POST['workout'],
+                'exercise_id' => $_POST['exercise'],
+                'reps' => 0,
+                'size' => 0,
+                'duration' => 0,
+                'notes' => '',
+                'perceived_difficulty_level' => 0,
+                'fatigue_level' => 0,
+                'motivation_level' => 0
+            ]);
+
+            header("location: /new/workout#excercise-" . $exerciseLog->id . "?workout=" . $_POST['workout'] . "&message=Workout added");
+            exit();
+        }
+        header("location: /new/workout?workout=" . $_POST['workout'] . "&error=Something went wrong, try again.");
+        exit();
+    }
+
+    public static function workout_new_edit()
+    {
+        authenticationHelper::isAuth();
+
+        if (!empty($_POST)) {
+
+            $validator = new ValidationHelper($_POST);
+
+            $validationRules = [
+                ['field' => 'reps', 'methods' => ['required'], 'message' => 'Reps is required.'],
+                ['field' => 'difficulty_level', 'methods' => ['required'], 'message' => 'A difficulty level is required.'],
+                ['field' => 'weight', 'methods' => ['nullable'], 'message' => 'Weight is invalid.'],
+                ['field' => 'duration', 'methods' => ['required'], 'message' => 'Duration is required'],
+                ['field' => 'notes', 'methods' => ['nullable'], 'message' => 'Notes is invalid.'],
+                ['field' => 'exercise', 'methods' => ['required'], 'message' => 'Invalid exercise.'],
+                ['field' => 'workout', 'methods' => ['required'], 'message' => 'Invalid workout.'],
+            ];
+
+            $validator->validate($validationRules);
+
+            if (!$validator->isValid()) {
+                $errorMessages = implode(', ', $validator->getErrors());
+                header("location: /new/workout?workout=" . $_POST['workout'] . "&error=" . urlencode($errorMessages));
+                exit();
+            }
+
+            $exerciseLog = new ExerciseLog();
+
+            $attributes = $exerciseLog->query->from($exerciseLog->table)
+                ->where('user_id', '=', AuthenticationHelper::getUser()->id)
+                ->where('id', '=', $_POST['exercise'])
+                ->get();
+
+            $exerciseLog->fill($attributes);
+
+            $exerciseLog->edit($exerciseLog->id, [
+                'reps' => $_POST['reps'],
+                'size' => $_POST['weight'],
+                'duration' => $_POST['duration'],
+                'notes' => $_POST['notes'],
+                'perceived_difficulty_level' => $_POST['difficulty_level'],
+                // 'fatigue_level' => $_POST['fatigue_level'],
+                // 'motivation_level' => $_POST['motivation_level']
+            ]);
+
+            header("location: /new/workout#excercise-" . $exerciseLog->id . "?workout=" . $_POST['workout'] . "&message=Workout edited");
+            exit();
+        }
+        header("location: /new/workout?workout=" . $_POST['workout'] . "&error=Something went wrong, try again.");
+        exit();
+    }
+
+    public static function workout_new_remove()
+    {
+        authenticationHelper::isAuth();
+
+        $log = new ExerciseLog();
+
+        $attributes = $log->query->from($log->table)
+            ->where('id', '=', $_GET['exercise'])
+            ->where('user_id', '=', AuthenticationHelper::getUser()->id)
+            ->where('workout_id', '=', $_GET['workout'])
+            ->where('created_at', 'LIKE', date("Y-m-d") . '%')
+            ->get();
+
+        $log->fill($attributes);
+        $log->delete($log->id);
+
+        header("location: /new/workout?workout=" . $_POST['workout'] . "&message=Workout deleted");
+        exit();
     }
 
     public static function meals_new()
@@ -259,18 +387,6 @@ class clientController
                 header("location: /my/meals/new/?error=" . urlencode($errorMessages));
                 exit();
             }
-
-            // print_r([
-            //     'user_id' => AuthenticationHelper::getUser()->id,
-            //     'diet_id' => explode(':', $_POST['meal'])[0],
-            //     'meal_id' => explode(':', $_POST['meal'])[1],
-            //     'time_of_consumption' => $_POST['date_eaten'] . " " . $_POST['time_eaten'],
-            //     'satisfaction_level' => $_POST['satisfaction'],
-            //     'location_of_consumption' => $_POST['location'],
-            //     'mood_during_consumption' => $_POST['mood'],
-            //     'additional_comments' => isset($_POST['additional_comments']) ? $_POST['additional_comments'] : 'N/A',
-            // ]);
-            // die();
 
             $meal = new MealLog();
             $meal->create([

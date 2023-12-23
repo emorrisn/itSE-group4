@@ -70,6 +70,15 @@ switch ($url) {
     case '/new/workout':
         clientController::workout_new();
         break;
+    case '/new-exercise/workout':
+        clientController::workout_new_add();
+        break;
+    case '/edit-exercise/workout':
+        clientController::workout_new_edit();
+        break;
+    case '/remove-exercise/workout':
+        clientController::workout_new_remove();
+        break;
     case '/my/workouts':
         clientController::workouts();
         break;
