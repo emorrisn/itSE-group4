@@ -9,32 +9,30 @@ namespace App\Models;
  * @category   Models
  * @since      Class available since Release 1.0.2
  */
-class WorkoutExercise extends Model
+class MealFood extends Model
 {
-
-    public $table = 'workoutexercise';
+    public $table = 'MealFood';
     public $timestamps = true;
 
     // Fillable fields
     public $fillable = [
         'id',
-        'workout_id',
-        'exercise_id',
-        'sets',
-        'reps',
-        'rest_time_between_sets',
+        'meal_id',
+        'food_id',
+        'quantity',
+        'notes',
         'created_at',
         'updated_at'
     ];
 
     // Relationships
-    public function workout()
+    public function meal()
     {
-        return $this->belongsTo(Workout::class, 'id', 'workout_id');
+        return $this->belongsTo(Meal::class, 'id', 'meal_id');
     }
 
-    public function exercise()
+    public function food()
     {
-        return $this->belongsTo(Exercise::class, 'id', 'exercise_id');
+        return $this->belongsTo(Food::class, 'id', 'food_id');
     }
 }

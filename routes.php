@@ -109,6 +109,12 @@ switch ($url) {
     case '/specialist/table':
         specialistController::table();
         break;
+    case '/specialist/add':
+        specialistController::add();
+        break;
+    case '/specialist/add/submit':
+        specialistController::add_submit();
+        break;
     case '/specialist/item':
         specialistController::item();
         break;
@@ -123,6 +129,9 @@ switch ($url) {
         break;
     case '/specialist/link':
         specialistController::link();
+        break;
+    case '/specialist/edit/item':
+        specialistController::item_edit();
         break;
     case '/admin':
         adminController::dashboard();

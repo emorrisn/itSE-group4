@@ -19,7 +19,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
         <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-blue-500 hover:text-blue-400 transition ease-in-out">
-              <a href="/specialist/link?table=<?php echo ($table) ?>&to=<?php echo ($link) ?>&<?php echo ($table); ?>_id=<?php echo ($_GET[$table . '_id']) ?>" class="flex items-center gap-x-1">
+              <a href="/specialist/table?table=<?php echo ($tableName) ?>" class="flex items-center gap-x-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
@@ -27,27 +27,20 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
               </a>
             </div>
             <h2 class="flex items-center justify-between gap-x-2 text-3xl font-bold leading-9 tracking-tight text-gray-900">
-              New Link
+              New <?php echo (ucwords($tableName)) ?>
             </h2>
           </div>
 
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="rounded-xl shadow-xl overflow-hidden hover:shadow-lg transition ease-in-out bg-white">
               <div class="p-4">
-                <form class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6" method="POST" action="/specialist/link/submit?table=<?php echo ($table); ?>&to=<?php echo ($link); ?>">
-
-                  <input type="hidden" name="<?php echo ($table); ?>_id" value="<?php echo ($_GET[$table . '_id']); ?>">
-                  <input type="hidden" name="<?php echo ($link); ?>_id" value="<?php echo ($_GET[$link . '_id']); ?>">
-
-                  <?php if (strtolower($_GET['table']) == "user") : ?>
-                    <input type="hidden" name="user_trainer_id" value="<?php echo (AuthenticationHelper::getUser()->id); ?>">
-                  <?php endif; ?>
-
-                  <?php foreach ($linkTable->fillable as $fill) : ?>
+                <form class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6" method="POST" action="/specialist/add/submit?table=<?php echo ($tableName); ?>">
+                  <?php foreach ($table->fillable as $fill) : ?>
                     <?php if ($fill == 'password') continue; ?>
                     <?php if ($fill == 'created_at') continue; ?>
                     <?php if ($fill == 'updated_at') continue; ?>
-                    <?php if (str_contains($fill, 'id')) continue; ?>
+                    <?php if ($fill == 'id') continue; ?>
+                    <?php if (str_contains($fill, '_id')) continue; ?>
 
                     <div class="sm:col-span-full">
                       <label for="name" class="block text-sm font-medium leading-6 text-gray-900"><?php echo (ucwords(str_replace('_', ' ', $fill))); ?></label>
@@ -65,7 +58,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
 
                   <div class="sm:col-span-full">
-                    <button type="submit" class="flex w-full justify-center rounded-xl bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors ease-in-out">Create Link</button>
+                    <button type="submit" class="flex w-full justify-center rounded-xl bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors ease-in-out">Create</button>
                   </div>
                 </form>
               </div>

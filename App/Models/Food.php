@@ -9,30 +9,26 @@ namespace App\Models;
  * @category   Models
  * @since      Class available since Release 1.0.2
  */
-class Meal extends Model
+class Food extends Model
 {
-    public $table = 'Meal';
+    public $table = 'Food';
     public $primaryKey = 'id';
     public $timestamps = true;
 
     // Fillable fields
     public $fillable = [
         'id',
-        'type',
         'name',
         'description',
-        'caloric_content',
-        'allergen_information',
-        'preparation_time',
-        'cooking_instructions',
-        'recipe_link',
-        'vegetarian_indicator',
+        'calories_per_serving',
+        'proteins',
+        'fats',
+        'carbohydrates',
+        'nutritional_information',
+        'origin',
+        'shelf_life',
+        'source',
         'created_at',
         'updated_at'
     ];
-
-    public function mealFood()
-    {
-        return $this->hasMany(MealFood::class, 'meal_id', 'id');
-    }
 }

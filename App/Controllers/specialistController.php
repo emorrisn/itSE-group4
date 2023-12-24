@@ -16,22 +16,34 @@ use App\Models\Workout;
  */
 class specialistController
 {
-    public static function dashboard()
+    private static function verify()
     {
         authenticationHelper::isAuth();
+
+        if (AuthenticationHelper::isRole('specialist')  == false && AuthenticationHelper::isRole('admin') == false) {
+            header('Location: /404');
+            exit;
+        }
+    }
+
+    public static function dashboard()
+    {
+        specialistController::verify();
+
         return require __DIR__ . '../../../Resources/Views/Pages/Specialist/dashboard.php';
     }
 
     public static function table()
     {
-        authenticationHelper::isAuth();
+        specialistController::verify();
 
         $tables = [
             'user',
             'exercise',
             'meal',
             'diet',
-            'workout'
+            'workout',
+            'food',
         ];
 
         if (!isset($_GET['table'])) {
@@ -65,9 +77,53 @@ class specialistController
         return require __DIR__ . '../../../Resources/Views/Pages/Specialist/table.php';
     }
 
+    public static function add()
+    {
+        specialistController::verify();
+
+        if (!isset($_GET['table'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        } else {
+            $tableName = $_GET['table'];
+            $fullClassName = "App\\Models\\" . $tableName;
+            $table = new $fullClassName();
+        }
+
+        return require __DIR__ . '../../../Resources/Views/Pages/Specialist/itemCreate.php';
+    }
+
+    public static function add_submit()
+    {
+        specialistController::verify();
+
+        if (!empty($_POST)) {
+
+            $tableName = $_GET['table'];
+            $table = new ("App\\Models\\" . $tableName)();
+
+            $added = $table->create($_POST);
+
+            if ($added == true) {
+                $getResults = $table->query->from($table->table);
+
+                foreach ($table->fillable as $fillable) {
+                    $getResults = $getResults->orWhere($fillable, 'LIKE', '%' . $_POST[$fillable] . '%');
+                }
+                $getResults = $getResults->get(false);
+
+                header('Location: /specialist/item?table=' . $tableName . '&item=' . $getResults[count($getResults) - 1]['id']);
+                exit();
+            }
+
+            header('Location: /specialist/item?table=' . $tableName . '&item=' . $table->id);
+            exit();
+        }
+    }
+
     public static function item()
     {
-        authenticationHelper::isAuth();
+        specialistController::verify();
 
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -84,7 +140,7 @@ class specialistController
 
     public static function link()
     {
-        authenticationHelper::isAuth();
+        specialistController::verify();
 
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -147,6 +203,8 @@ class specialistController
 
     public static function item_link()
     {
+        specialistController::verify();
+
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
@@ -190,11 +248,9 @@ class specialistController
 
     public static function item_link_submit()
     {
-        AuthenticationHelper::isAuth();
+        specialistController::verify();
 
         if (!empty($_POST)) {
-
-            // TODO: user_id is incorrect, not sure why
 
             $linkTableName = $_GET['table'] . ucfirst($_GET['to']);
             $fullClassName = "App\\Models\\" . $linkTableName;
@@ -211,7 +267,7 @@ class specialistController
 
     public static function item_edit_link_submit()
     {
-        AuthenticationHelper::isAuth();
+        specialistController::verify();
 
         $table = $_GET['table'];
         $link = $_GET['to'];
@@ -225,18 +281,39 @@ class specialistController
             if (!empty($_POST['delete']) && $_POST['delete'] >= 0) {
                 $linkTable->delete($_POST['delete']);
 
-                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&" . $table . "_id=" . $_POST[$table . '_id']);
                 exit();
             } else {
                 $item = $_POST['item'];
                 unset($_POST['item']);
                 $linkTable->edit($item, $_POST);
 
-                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&" . $table . "_id=" . $_POST[$table . '_id']);
                 exit();
             }
         }
-        header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+        header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&" . $table . "_id=" . $_POST[$table . '_id']);
         exit;
+    }
+
+    public static function item_edit()
+    {
+        specialistController::verify();
+
+        $tableName = $_GET['table'];
+        $fullClassName = "App\\Models\\" . $tableName;
+        $table = new $fullClassName();
+
+        if (!empty($_POST['delete']) && $_POST['delete'] >= 0) {
+            $table->delete($_POST['delete']);
+
+            header("Location: /specialist/table?table=" . $tableName);
+            exit();
+        } else {
+            $table->edit($_GET['item'], $_POST);
+        }
+
+        header("location: /specialist/item?table=" . $tableName . "&item=" . $_GET['item'] . "&message=Saved");
+        exit();
     }
 }

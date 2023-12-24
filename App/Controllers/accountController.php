@@ -18,19 +18,16 @@ class accountController
 {
     public static function login()
     {
-        authenticationHelper::isGuest();
         return require __DIR__ . '../../../Resources/Views/Pages/authentication/login.php';
     }
 
     public static function forgot()
     {
-        authenticationHelper::isGuest();
         return require __DIR__ . '../../../Resources/Views/Pages/authentication/forgot.php';
     }
 
     public static function register()
     {
-        authenticationHelper::isGuest();
         return require __DIR__ . '../../../Resources/Views/Pages/authentication/register.php';
     }
 

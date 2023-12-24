@@ -29,6 +29,11 @@ class adminController
     {
         authenticationHelper::isAuth();
 
+        if (AuthenticationHelper::isRole('admin')  == false) {
+            header('Location: /404');
+            exit;
+        }
+
         $databaseHelper = new \App\Helpers\DatabaseHelper();
         $search = isset($_GET['search']) ? $_GET['search'] : '';
         $tables = $databaseHelper->getAllTables();
@@ -50,6 +55,10 @@ class adminController
     {
         authenticationHelper::isAuth();
 
+        if (AuthenticationHelper::isRole('admin')  == false) {
+            header('Location: /404');
+            exit;
+        }
 
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
@@ -81,6 +90,11 @@ class adminController
     {
         authenticationHelper::isAuth();
 
+        if (AuthenticationHelper::isRole('admin')  == false) {
+            header('Location: /404');
+            exit;
+        }
+
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
@@ -98,11 +112,14 @@ class adminController
     {
         authenticationHelper::isAuth();
 
+        if (AuthenticationHelper::isRole('admin')  == false) {
+            header('Location: /404');
+            exit;
+        }
+
         $tableName = $_GET['table'];
         $fullClassName = "App\\Models\\" . $tableName;
         $table = new $fullClassName();
-
-        $table->edit($_GET['item'], $_POST);
 
         header("location: /admin/item?table=" . $tableName . "&item=" . $_GET['item'] . "&message=Saved");
         exit();

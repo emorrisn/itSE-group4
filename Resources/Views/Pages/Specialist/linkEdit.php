@@ -19,7 +19,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
         <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-blue-500 hover:text-blue-400 transition ease-in-out">
-              <a href="/specialist/link?table=<?php echo ($table) ?>&to=<?php echo ($link) ?>&user_id=<?php echo ($_GET[$table . '_id']) ?>" class="flex items-center gap-x-1">
+              <a href="/specialist/link?table=<?php echo ($table) ?>&to=<?php echo ($link) ?>&<?php echo ($table); ?>_id=<?php echo ($_GET[$table . '_id']) ?>" class="flex items-center gap-x-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
@@ -38,7 +38,10 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
                   <input type="hidden" name="<?php echo ($table); ?>_id" value="<?php echo ($_GET[$table . '_id']); ?>">
                   <input type="hidden" name="<?php echo ($link); ?>_id" value="<?php echo ($_GET[$link . '_id']); ?>">
-                  <input type="hidden" name="user_trainer_id" value="<?php echo (AuthenticationHelper::getUser()->id); ?>">
+
+                  <?php if (strtolower($_GET['table']) == "user") : ?>
+                    <input type="hidden" name="user_trainer_id" value="<?php echo (AuthenticationHelper::getUser()->id); ?>">
+                  <?php endif; ?>
 
                   <?php foreach ($linkTable->fillable as $fill) : ?>
                     <?php if ($fill == 'password') continue; ?>
@@ -64,7 +67,6 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                     <button type="submit" name="item" value="<?php echo ($result['id']) ?>" class="flex w-full justify-center rounded-xl bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors ease-in-out">Save Changes</button>
                   </div>
                   <div class="sm:col-span-full">
-
                     <button type="submit" name="delete" value="<?php echo ($result['id']) ?>" class="flex w-full justify-center rounded-xl bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors ease-in-out">Delete Link</button>
                   </div>
                 </form>

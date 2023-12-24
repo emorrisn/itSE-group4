@@ -30,6 +30,9 @@ require_once(__DIR__ . "/App/Models/Workout.php");
 require_once(__DIR__ . "/App/Models/ExerciseLog.php");
 require_once(__DIR__ . "/App/Models/WorkoutExercise.php");
 require_once(__DIR__ . "/App/Models/Exercise.php");
+require_once(__DIR__ . "/App/Models/Food.php");
+require_once(__DIR__ . "/App/Models/MealFood.php");
+
 
 // Controller
 require_once(__DIR__ . "/App/Controllers/accountController.php");
