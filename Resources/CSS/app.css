@@ -22,3 +22,7 @@
 .day.prev {
     opacity: 0.5;
 }
+.hs-overlay-backdrop {
+    display: none !important;
+    z-index: 0 !important;
+}

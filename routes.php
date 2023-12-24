@@ -106,6 +106,18 @@ switch ($url) {
     case '/specialist':
         specialistController::dashboard();
         break;
+    case '/specialist/table':
+        specialistController::table();
+        break;
+    case '/specialist/item':
+        specialistController::item();
+        break;
+    case '/specialist/item/link':
+        specialistController::item_link();
+        break;
+    case '/specialist/link':
+        specialistController::link();
+        break;
     case '/admin':
         adminController::dashboard();
         break;

@@ -11,7 +11,7 @@ namespace App\Models;
  */
 class UserDiet extends Model
 {
-    public $table = 'UserDiet';
+    public $table = 'userdiet';
     public $timestamps = true;
 
     // Fillable fields

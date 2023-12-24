@@ -31,7 +31,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
             <?php if (AuthenticationHelper::getUser()->trainer_id != null) : ?>
               <div class="shadow-xl rounded-xl p-6 bg-white">
                 <div class="text-center">
-                  <img class="rounded-full w-32 h-32 mx-auto" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=900&h=900&q=80" alt="Image Description">
+                  <img class="rounded-full w-32 h-32 mx-auto" src="/public/images/avatar.png" alt="Person">
                   <div class="mt-2 sm:mt-4">
                     <h3 class="text-sm font-medium text-gray-800 sm:text-base lg:text-lg dark:text-gray-200">
                       <?php echo AuthenticationHelper::getUser()->trainer()->name; ?>
