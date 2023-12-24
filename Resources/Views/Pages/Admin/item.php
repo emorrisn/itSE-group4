@@ -37,9 +37,15 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                     <?php if (str_contains($fill, 'id')) continue; ?>
 
                     <div class="sm:col-span-full">
-                      <label for="name" class="block text-sm font-medium leading-6 text-gray-900"><?php echo ($fill); ?>:</label>
+                      <label for="name" class="block text-sm font-medium leading-6 text-gray-900"><?php echo (ucwords(str_replace('_', ' ', $fill))); ?></label>
                       <div class="mt-2">
-                        <input id="<?php echo ($fill); ?>" name="<?php echo ($fill); ?>" type="text" value="<?php echo ($result[$fill]); ?>" autocomplete="email" required class="block w-full rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-2 ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6 transition ease-in-out">
+                        <?php if (str_contains($fill, 'date')) : ?>
+                          <input id="<?php echo ($fill); ?>" name="<?php echo ($fill); ?>" type="date" value="<?php echo ($result[$fill]); ?>" autocomplete="email" required class="block w-full rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-2 ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6 transition ease-in-out">
+                        <?php elseif (str_contains($fill, 'comments')) : ?>
+                          <textarea id="<?php echo ($fill); ?>" name="<?php echo ($fill); ?>" type="text" value="<?php echo ($result[$fill]); ?>" autocomplete="email" required class="block w-full rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-2 ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6 transition ease-in-out"><?php echo ($result[$fill]); ?></textarea>
+                        <?php else : ?>
+                          <input id="<?php echo ($fill); ?>" name="<?php echo ($fill); ?>" type="text" value="<?php echo ($result[$fill]); ?>" autocomplete="email" required class="block w-full rounded-xl border-0 py-1.5 text-gray-900 shadow-sm ring-2 ring-gray-200 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-600 sm:text-sm sm:leading-6 transition ease-in-out">
+                        <?php endif; ?>
                       </div>
                     </div>
                   <?php endforeach; ?>

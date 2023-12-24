@@ -112,6 +112,12 @@ switch ($url) {
     case '/specialist/item':
         specialistController::item();
         break;
+    case '/specialist/link/submit':
+        specialistController::item_link_submit();
+        break;
+    case '/specialist/edit-link/submit':
+        specialistController::item_edit_link_submit();
+        break;
     case '/specialist/item/link':
         specialistController::item_link();
         break;

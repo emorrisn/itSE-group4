@@ -34,7 +34,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
               </div>
               <div>
-                <a href="/specialist/link?table=user&to=workout&item=<?php echo ($result['id']) ?>" class="font-semibold text-gray-900">
+                <a href="/specialist/link?table=user&to=workout&user_id=<?php echo ($result['id']) ?>" class="font-semibold text-gray-900">
                   Workouts
                   <span class="absolute inset-0"></span>
                 </a>
@@ -58,7 +58,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
 
               </div>
               <div>
-                <a href="/specialist/link?table=user&to=diet&item=<?php echo ($result['id']) ?>" class="font-semibold text-gray-900">
+                <a href="/specialist/link?table=user&to=diet&user_id=<?php echo ($result['id']) ?>" class="font-semibold text-gray-900">
                   Diets
                   <span class="absolute inset-0"></span>
                 </a>

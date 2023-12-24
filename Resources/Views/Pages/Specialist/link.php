@@ -19,7 +19,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
         <div class="gap-y-6 mx-auto w-full py-12 sm:py-0 flex sm:my-auto flex-col sm:justify-center">
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div class="-m-1.5 p-1.5 text-lg font-bold tracking-tight flex text-blue-500 hover:text-blue-400 transition ease-in-out">
-              <a href="/specialist/item?table=<?php echo ($tableName) ?>&item=<?php echo ($_GET['item']) ?>" class="flex items-center gap-x-1">
+              <a href="/specialist/item?table=<?php echo ($tableName) ?>&item=<?php echo ($_GET[$_GET['table'] . '_id']) ?>" class="flex items-center gap-x-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
@@ -39,9 +39,9 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                       </svg>
 
                     </div>
-                    <input type="hidden" name="table" value="<?php echo ($linkTableName) ?>" />
+                    <input type="hidden" name="table" value="<?php echo ($tableName) ?>" />
                     <input type="hidden" name="to" value="<?php echo ($_GET['to']) ?>">
-                    <input type="hidden" name="item" value="<?php echo ($_GET['item']) ?>">
+                    <input type="hidden" name="<?php echo ($tableName) ?>_id" value="<?php echo ($_GET[$_GET['table'] . '_id']) ?>">
                     <input type="text" name="search" id="search" class="block w-full rounded-xl border-2 py-1.5 pl-9 pr-20 text-gray-900 border-gray-200 placeholder:text-gray-400 focus:border-2 focus:border-blue-400 sm:text-sm sm:leading-6 bg-gray-100 transition ease-in-out" placeholder="Search <?php echo ($linkTableName) ?>">
                   </div>
                 </div>
@@ -63,8 +63,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
           <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <div id="bar-with-underline-1" role="tabpanel" aria-labelledby="bar-with-underline-item-1">
               <div class="bg-white rounded-xl shadow-xl overflow-hidden hover:shadow-lg transition ease-in-out">
-                <?php $functionName = $tableName . ucfirst($linkTableName); ?>
-                <?php foreach (AuthenticationHelper::getUser()->$functionName() as $r) : ?>
+                <?php foreach ($alreadyLinkedResults as $r) : ?>
                   <!-- User -->
                   <div class="hover:bg-gray-200 bg-white group relative flex flex-col gap-x-6 p-4 transition ease-in-out">
                     <?php foreach ($r->fillable as $fill) : ?>
@@ -92,7 +91,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                       <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
                         <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                           <h3 class="font-bold text-gray-800 dark:text-white">
-                            Confirm unlink
+                            Confirm
                           </h3>
                           <button type="button" class="flex justify-center items-center w-7 h-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" data-hs-overlay="#modal<?php echo ($r->id); ?>">
                             <span class=" sr-only">Close</span>
@@ -104,13 +103,13 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                         </div>
                         <div class="p-4 overflow-y-auto">
                           <p class="mt-1 text-gray-800 dark:text-gray-400">
-                            Are you sure you want to unlink <?php echo ($linkTableName) ?> from selected <?php echo ($tableName) ?>?
+                            Are you sure you want to edit or unlink <?php echo ($linkTableName) ?> from selected <?php echo ($tableName) ?>?
                           </p>
                         </div>
                         <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
 
-                          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/specialist/item/link?table=<?php echo ($tableName); ?>&to=<?php echo ($linkTableName); ?>&item=<?php echo ($r->id); ?>&type=unlink">
-                            Unlink Item
+                          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/specialist/item/link?table=<?php echo ($tableName); ?>&to=<?php echo ($linkTableName); ?>&<?php echo ($tableName); ?>_id=<?php echo ($_GET[$_GET['table'] . '_id']) ?>&<?php echo ($linkTableName); ?>_id=<?php echo ($link->id); ?>&link=<?php echo ($r->id); ?>&type=edit">
+                            Edit or Unlink Item
                           </a>
                         </div>
                       </div>
@@ -122,7 +121,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
             </div>
             <div id="bar-with-underline-2" class="hidden" role="tabpanel" aria-labelledby="bar-with-underline-item-2">
               <div class="rounded-xl shadow-xl overflow-hidden hover:shadow-lg transition ease-in-out">
-                <?php foreach ($results as $r) : ?>
+                <?php foreach ($toLinkResults as $r) : ?>
 
                   <div class="group relative flex flex-col gap-x-6 bg-white p-4 hover:bg-gray-200 transition ease-in-out">
                     <?php foreach ($r->fillable as $fill) : ?>
@@ -157,7 +156,7 @@ include_once(__DIR__ . "\..\..\Headers\landing.php");
                         </div>
                         <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
 
-                          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/specialist/item/link?table=<?php echo ($tableName); ?>&to=<?php echo ($linkTableName); ?>&item=<?php echo ($r->id); ?>&type=link">
+                          <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/specialist/item/link?table=<?php echo ($tableName); ?>&to=<?php echo ($linkTableName); ?>&<?php echo ($tableName); ?>_id=<?php echo ($_GET[$_GET['table'] . '_id']) ?>&<?php echo ($linkTableName); ?>_id=<?php echo ($r->id); ?>&type=link">
                             Link Item
                           </a>
                         </div>

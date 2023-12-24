@@ -86,8 +86,6 @@ class specialistController
     {
         authenticationHelper::isAuth();
 
-        // ?table=client&to=workout&item=1
-
         if (!isset($_GET['table'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
@@ -100,36 +98,49 @@ class specialistController
 
         $tableName = $_GET['table'];
         $linkTableName = $_GET['to'];
+        $relationshipTableName = $tableName . ucfirst($linkTableName);
 
-        $fullClassName = "App\\Models\\" . $tableName;
-        $linkfullClassName = "App\\Models\\" . $linkTableName;
-
-        $table = new $fullClassName();
-        $linktable = new $linkfullClassName();
-
-        // Get result of table that will be linked
-        $result = $table->query->from($table->table)->where('id', '=', $_GET['item'])->get();
+        $table = new ("App\\Models\\" . $tableName)();
+        $linkTable = new ("App\\Models\\" . $linkTableName)();
+        $relationshipTable = new ("App\\Models\\" . $relationshipTableName)();
 
         // Get results of table items to be linked
-        $findResults = $linktable->query->from($linktable->table);
-        $results = [];
+        $toLinkResults = [];
+        $getToLinkResults = $linkTable->query->from($linkTable->table);
+
+        // Get results of already linked items
+        $alreadyLinkedResults = [];
+        $getAlreadyLinkedResults = $table->query->from($relationshipTableName)->where($tableName . '_id', '=', $_GET[$tableName . '_id']);
+
+        // Deal with searches
 
         if (isset($_GET['search'])) {
-
-            foreach ($linktable->fillable as $fillable) {
-                $findResults = $findResults->orWhere($fillable, 'LIKE', '%' . $_GET['search'] . '%');
+            foreach ($linkTable->fillable as $fillable) {
+                $getToLinkResults = $getToLinkResults->orWhere($fillable, 'LIKE', '%' . $_GET['search'] . '%');
             }
-            $findResults = $findResults->get(false);
+            foreach ($relationshipTable->fillable as $fillable) {
+                $getAlreadyLinkedResults = $getAlreadyLinkedResults->orWhere($fillable, 'LIKE', '%' . $_GET['search'] . '%');
+            }
+            $getToLinkResults = $getToLinkResults->get(false);
+            $getAlreadyLinkedResults = $getAlreadyLinkedResults->get(false);
         } else {
-            $findResults = $findResults->get(false);
+            $getToLinkResults = $getToLinkResults->get(false);
+            $getAlreadyLinkedResults = $getAlreadyLinkedResults->get(false);
         }
 
-        foreach ($findResults as $r) {
-            $linktable = new $linkfullClassName();
+        // Assign attributes to objects
+
+        foreach ($getToLinkResults as $r) {
+            $linktable = new ("App\\Models\\" . $linkTableName)();
             $linktable->fill($r);
-            $results[] = $linktable;
+            $toLinkResults[] = $linktable;
         }
 
+        foreach ($getAlreadyLinkedResults as $r) {
+            $relationshipTable = new ("App\\Models\\" . $relationshipTableName)();
+            $relationshipTable->fill($r);
+            $alreadyLinkedResults[] = $relationshipTable;
+        }
 
         return require __DIR__ . '../../../Resources/Views/Pages/Specialist/link.php';
     }
@@ -146,7 +157,12 @@ class specialistController
             exit;
         }
 
-        if (!isset($_GET['item'])) {
+        if (!isset($_GET[$_GET['table'] . '_id'])) {
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
+        if (!isset($_GET[$_GET['to'] . '_id'])) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
@@ -156,24 +172,71 @@ class specialistController
 
         $table = $_GET['table'];
         $link = $_GET['to'];
-        $item = $_GET['item'];
-        $unlink = $_GET['type'] == 'link' ? false : true;
+        $edit = $_GET['type'] == 'edit' ? true : false;
 
         $itemToLink = new ("App\\Models\\" . ucfirst($link))();
         $linkTable = new $fullClassName();
 
-        $itemToLink->fill($itemToLink->query->from($itemToLink->table)->where('id', '=', $item)->get());
+        $itemToLink->fill($itemToLink->query->from($itemToLink->table)->where('id', '=', $_GET[$_GET['table'] . '_id'])->get());
 
+        if ($edit == true) {
+            $result = $linkTable->query->from($linkTable->table)->where("id", '=', $_GET['link'])->get();
 
-        print_r($linkTable);
-        die();
+            return require __DIR__ . '../../../Resources/Views/Pages/Specialist/linkEdit.php';
+        }
 
+        return require __DIR__ . '../../../Resources/Views/Pages/Specialist/linkCreate.php';
+    }
 
-        // >> IF: unlink then just remove the item from the table
-        // >> OR: link then: 
-        // pass over the item with the details that need filling-in to the view
-        // view will have a form which 
+    public static function item_link_submit()
+    {
+        AuthenticationHelper::isAuth();
 
-        return require __DIR__ . '../../../Resources/Views/Pages/Specialist/link-create.php';
+        if (!empty($_POST)) {
+
+            // TODO: user_id is incorrect, not sure why
+
+            $linkTableName = $_GET['table'] . ucfirst($_GET['to']);
+            $fullClassName = "App\\Models\\" . $linkTableName;
+            $linkTable = new $fullClassName();
+
+            $linkTable->create($_POST);
+
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+
+    public static function item_edit_link_submit()
+    {
+        AuthenticationHelper::isAuth();
+
+        $table = $_GET['table'];
+        $link = $_GET['to'];
+
+        if (!empty($_POST)) {
+
+            $linkTableName = $_GET['table'] . ucfirst($_GET['to']);
+            $fullClassName = "App\\Models\\" . $linkTableName;
+            $linkTable = new $fullClassName();
+
+            if (!empty($_POST['delete']) && $_POST['delete'] >= 0) {
+                $linkTable->delete($_POST['delete']);
+
+                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+                exit();
+            } else {
+                $item = $_POST['item'];
+                unset($_POST['item']);
+                $linkTable->edit($item, $_POST);
+
+                header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+                exit();
+            }
+        }
+        header("Location: /specialist/link?table=" . $table . "&to=" . $link . "&user_id=" . $_POST[$table . '_id']);
+        exit;
     }
 }
