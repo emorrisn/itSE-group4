@@ -303,6 +303,7 @@ class specialistController
         $tableName = $_GET['table'];
         $fullClassName = "App\\Models\\" . $tableName;
         $table = new $fullClassName();
+        
 
         if (!empty($_POST['delete']) && $_POST['delete'] >= 0) {
             $table->delete($_POST['delete']);

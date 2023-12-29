@@ -80,9 +80,20 @@ class AuthenticationHelper
         return $valid;
     }
 
-    public static function isGuest()
+    public static function isRole(string $role)
     {
-        // TODO:
+        $valid = false;
+
+        $user = new User();
+        $find_user = $user->findByEmail($_SESSION['email']);
+
+        $user->fill($find_user);
+
+        if (strtolower($user->type) == $role) {
+            $valid = true;
+        }
+
+        return $valid;
     }
 
     public static function getUser()

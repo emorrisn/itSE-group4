@@ -4,7 +4,7 @@ CREATE SCHEMA IF NOT EXISTS ModernFit;
 USE ModernFit;
 
 CREATE TABLE `User` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `type` varchar(255),
   `pin` int,
   `name` varchar(255),
@@ -26,7 +26,7 @@ CREATE TABLE `User` (
 );
 
 CREATE TABLE `Workout` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `description` text,
   `duration` int,
@@ -40,7 +40,7 @@ CREATE TABLE `Workout` (
 );
 
 CREATE TABLE `Exercise` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `description` text,
   `category` varchar(20),
@@ -55,7 +55,7 @@ CREATE TABLE `Exercise` (
 );
 
 CREATE TABLE `WorkoutExercise` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `workout_id` int,
   `exercise_id` int,
   `sets` int,
@@ -66,7 +66,7 @@ CREATE TABLE `WorkoutExercise` (
 );
 
 CREATE TABLE `UserWorkout` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `workout_id` int,
   `start_date` date,
@@ -79,7 +79,7 @@ CREATE TABLE `UserWorkout` (
 );
 
 CREATE TABLE `ExerciseLog` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `exercise_id` int,
   `workout_id` int,
   `user_id` int,
@@ -95,7 +95,7 @@ CREATE TABLE `ExerciseLog` (
 );
 
 CREATE TABLE `Diet` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_trainer_id` int,
   `name` varchar(255),
   `description` text,
@@ -110,7 +110,7 @@ CREATE TABLE `Diet` (
 );
 
 CREATE TABLE `UserDiet` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `diet_id` int,
   `user_trainer_id` int,
@@ -121,7 +121,7 @@ CREATE TABLE `UserDiet` (
 );
 
 CREATE TABLE `Meal` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `type` varchar(255),
   `name` varchar(255),
   `description` text,
@@ -136,7 +136,7 @@ CREATE TABLE `Meal` (
 );
 
 CREATE TABLE `MealLog` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `diet_id` int,
   `meal_id` int,
@@ -150,7 +150,7 @@ CREATE TABLE `MealLog` (
 );
 
 CREATE TABLE `Food` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255),
   `description` text,
   `calories_per_serving` int,
@@ -166,7 +166,7 @@ CREATE TABLE `Food` (
 );
 
 CREATE TABLE `DietMeal` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `diet_id` int,
   `meal_id` int,
   `order` int,
@@ -175,7 +175,7 @@ CREATE TABLE `DietMeal` (
 );
 
 CREATE TABLE `MealFood` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `meal_id` int,
   `food_id` int,
   `quantity` int,
@@ -185,16 +185,17 @@ CREATE TABLE `MealFood` (
 );
 
 CREATE TABLE `Notification` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `type` varchar(50),
   `content` text,
   `delivery_status` varchar(20),
-  `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `Subscription` (
-  `id` int PRIMARY KEY,
+  `id` int PRIMARY KEY AUTO_INCREMENT,
   `user_id` int,
   `subscription_plan` varchar(50),
   `start_date` date,
